@@ -1,0 +1,12 @@
+{
+  "Repositories": [
+    {
+      "Name": "Web",
+      "Path": "C:/Path/To/Repository1"
+    },
+    {
+      "Name": "Integration",
+      "Path": "C:/Path/To/Repository2"
+    }
+  ]
+}
