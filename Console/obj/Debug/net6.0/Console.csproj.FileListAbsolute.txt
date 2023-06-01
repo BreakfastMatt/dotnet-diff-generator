@@ -1,0 +1,15 @@
+D:\Documents\Programming Projects\Git-Diff-Generator\GitDiffGenerator\Console\bin\Debug\net6.0\Console.exe
+D:\Documents\Programming Projects\Git-Diff-Generator\GitDiffGenerator\Console\bin\Debug\net6.0\Console.deps.json
+D:\Documents\Programming Projects\Git-Diff-Generator\GitDiffGenerator\Console\bin\Debug\net6.0\Console.runtimeconfig.json
+D:\Documents\Programming Projects\Git-Diff-Generator\GitDiffGenerator\Console\bin\Debug\net6.0\Console.dll
+D:\Documents\Programming Projects\Git-Diff-Generator\GitDiffGenerator\Console\bin\Debug\net6.0\Console.pdb
+D:\Documents\Programming Projects\Git-Diff-Generator\GitDiffGenerator\Console\obj\Debug\net6.0\Console.csproj.AssemblyReference.cache
+D:\Documents\Programming Projects\Git-Diff-Generator\GitDiffGenerator\Console\obj\Debug\net6.0\Console.GeneratedMSBuildEditorConfig.editorconfig
+D:\Documents\Programming Projects\Git-Diff-Generator\GitDiffGenerator\Console\obj\Debug\net6.0\Console.AssemblyInfoInputs.cache
+D:\Documents\Programming Projects\Git-Diff-Generator\GitDiffGenerator\Console\obj\Debug\net6.0\Console.AssemblyInfo.cs
+D:\Documents\Programming Projects\Git-Diff-Generator\GitDiffGenerator\Console\obj\Debug\net6.0\Console.csproj.CoreCompileInputs.cache
+D:\Documents\Programming Projects\Git-Diff-Generator\GitDiffGenerator\Console\obj\Debug\net6.0\Console.dll
+D:\Documents\Programming Projects\Git-Diff-Generator\GitDiffGenerator\Console\obj\Debug\net6.0\refint\Console.dll
+D:\Documents\Programming Projects\Git-Diff-Generator\GitDiffGenerator\Console\obj\Debug\net6.0\Console.pdb
+D:\Documents\Programming Projects\Git-Diff-Generator\GitDiffGenerator\Console\obj\Debug\net6.0\Console.genruntimeconfig.cache
+D:\Documents\Programming Projects\Git-Diff-Generator\GitDiffGenerator\Console\obj\Debug\net6.0\ref\Console.dll

@@ -1,0 +1,42 @@
+# .NET build artifacts
+*.o
+*.obj
+*.dll
+*.exe
+*.pdb
+*.dll.config
+*.exe.config
+*.deps.json
+*.runtimeconfig.json
+*.runtimeconfig.dev.json
+
+# .NET test results
+*.TestResults
+
+# Visual Studio files
+.vs/
+*.vscode/
+*.sln
+*.csproj.user
+*.userprefs
+*.suo
+*.cache
+*.bak
+
+# NuGet packages
+*.nuget.props
+*.nuget.targets
+/.paket/
+
+# Build output
+/bin/
+/obj/
+
+# Other build artifacts
+*.swp
+*.bak
+*.cache
+
+# Miscellaneous
+Thumbs.db
+.DS_Store
