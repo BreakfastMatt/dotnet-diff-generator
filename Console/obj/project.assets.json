@@ -1,11 +1,250 @@
 {
   "version": 3,
   "targets": {
-    "net6.0": {}
+    "net6.0": {
+      "LibGit2Sharp/0.27.2": {
+        "type": "package",
+        "dependencies": {
+          "LibGit2Sharp.NativeBinaries": "[2.0.320]"
+        },
+        "compile": {
+          "lib/net6.0/LibGit2Sharp.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net6.0/LibGit2Sharp.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "LibGit2Sharp.NativeBinaries/2.0.320": {
+        "type": "package",
+        "build": {
+          "build/_._": {}
+        },
+        "buildMultiTargeting": {
+          "buildMultiTargeting/_._": {}
+        },
+        "runtimeTargets": {
+          "runtimes/linux-arm/native/libgit2-e632535.so": {
+            "assetType": "native",
+            "rid": "linux-arm"
+          },
+          "runtimes/linux-arm64/native/libgit2-e632535.so": {
+            "assetType": "native",
+            "rid": "linux-arm64"
+          },
+          "runtimes/linux-musl-arm/native/libgit2-e632535.so": {
+            "assetType": "native",
+            "rid": "linux-musl-arm"
+          },
+          "runtimes/linux-musl-arm64/native/libgit2-e632535.so": {
+            "assetType": "native",
+            "rid": "linux-musl-arm64"
+          },
+          "runtimes/linux-musl-x64/native/libgit2-e632535.so": {
+            "assetType": "native",
+            "rid": "linux-musl-x64"
+          },
+          "runtimes/linux-x64/native/libgit2-e632535.so": {
+            "assetType": "native",
+            "rid": "linux-x64"
+          },
+          "runtimes/osx-arm64/native/libgit2-e632535.dylib": {
+            "assetType": "native",
+            "rid": "osx-arm64"
+          },
+          "runtimes/osx-x64/native/libgit2-e632535.dylib": {
+            "assetType": "native",
+            "rid": "osx-x64"
+          },
+          "runtimes/win-arm64/native/git2-e632535.dll": {
+            "assetType": "native",
+            "rid": "win-arm64"
+          },
+          "runtimes/win-x64/native/git2-e632535.dll": {
+            "assetType": "native",
+            "rid": "win-x64"
+          },
+          "runtimes/win-x86/native/git2-e632535.dll": {
+            "assetType": "native",
+            "rid": "win-x86"
+          }
+        }
+      },
+      "Newtonsoft.Json/13.0.3": {
+        "type": "package",
+        "compile": {
+          "lib/net6.0/Newtonsoft.Json.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net6.0/Newtonsoft.Json.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "Application/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "dependencies": {
+          "Models": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/Application.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Application.dll": {}
+        }
+      },
+      "Dependencies/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "dependencies": {
+          "LibGit2Sharp": "0.27.2",
+          "Newtonsoft.Json": "13.0.3"
+        },
+        "compile": {
+          "bin/placeholder/Dependencies.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Dependencies.dll": {}
+        }
+      },
+      "Domain/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "dependencies": {
+          "Dependencies": "1.0.0",
+          "Models": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/Domain.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Domain.dll": {}
+        }
+      },
+      "Models/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "compile": {
+          "bin/placeholder/Models.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Models.dll": {}
+        }
+      }
+    }
   },
-  "libraries": {},
+  "libraries": {
+    "LibGit2Sharp/0.27.2": {
+      "sha512": "TYIfwuumwmZFjxwRFz5y2MyTA8jc19MejSyRRTCS/TflhrdQPH7H84ueyCpY0+xkNWThEd+dCnkuf7XuH3tt+A==",
+      "type": "package",
+      "path": "libgit2sharp/0.27.2",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "App_Readme/CHANGES.md",
+        "App_Readme/LICENSE.md",
+        "App_Readme/README.md",
+        "lib/net472/LibGit2Sharp.dll",
+        "lib/net472/LibGit2Sharp.xml",
+        "lib/net6.0/LibGit2Sharp.dll",
+        "lib/net6.0/LibGit2Sharp.xml",
+        "libgit2sharp.0.27.2.nupkg.sha512",
+        "libgit2sharp.nuspec",
+        "square-logo.png"
+      ]
+    },
+    "LibGit2Sharp.NativeBinaries/2.0.320": {
+      "sha512": "7vIqOhB+5LOi9arXi8IdlkWURpQEiMtnwVP//djA7cQvIVfpC4bZSnQIDe4kwwvsU/w1oH0YkBTgMmpkVndNbg==",
+      "type": "package",
+      "path": "libgit2sharp.nativebinaries/2.0.320",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "build/LibGit2Sharp.NativeBinaries.props",
+        "build/net46/LibGit2Sharp.NativeBinaries.props",
+        "buildMultiTargeting/LibGit2Sharp.NativeBinaries.props",
+        "libgit2/LibGit2Sharp.dll.config",
+        "libgit2/libgit2.license.txt",
+        "libgit2/libgit2.png",
+        "libgit2/libgit2_hash.txt",
+        "libgit2sharp.nativebinaries.2.0.320.nupkg.sha512",
+        "libgit2sharp.nativebinaries.nuspec",
+        "runtimes/linux-arm/native/libgit2-e632535.so",
+        "runtimes/linux-arm64/native/libgit2-e632535.so",
+        "runtimes/linux-musl-arm/native/libgit2-e632535.so",
+        "runtimes/linux-musl-arm64/native/libgit2-e632535.so",
+        "runtimes/linux-musl-x64/native/libgit2-e632535.so",
+        "runtimes/linux-x64/native/libgit2-e632535.so",
+        "runtimes/osx-arm64/native/libgit2-e632535.dylib",
+        "runtimes/osx-x64/native/libgit2-e632535.dylib",
+        "runtimes/win-arm64/native/git2-e632535.dll",
+        "runtimes/win-x64/native/git2-e632535.dll",
+        "runtimes/win-x86/native/git2-e632535.dll"
+      ]
+    },
+    "Newtonsoft.Json/13.0.3": {
+      "sha512": "HrC5BXdl00IP9zeV+0Z848QWPAoCr9P3bDEZguI+gkLcBKAOxix/tLEAAHC+UvDNPv4a2d18lOReHMOagPa+zQ==",
+      "type": "package",
+      "path": "newtonsoft.json/13.0.3",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.md",
+        "README.md",
+        "lib/net20/Newtonsoft.Json.dll",
+        "lib/net20/Newtonsoft.Json.xml",
+        "lib/net35/Newtonsoft.Json.dll",
+        "lib/net35/Newtonsoft.Json.xml",
+        "lib/net40/Newtonsoft.Json.dll",
+        "lib/net40/Newtonsoft.Json.xml",
+        "lib/net45/Newtonsoft.Json.dll",
+        "lib/net45/Newtonsoft.Json.xml",
+        "lib/net6.0/Newtonsoft.Json.dll",
+        "lib/net6.0/Newtonsoft.Json.xml",
+        "lib/netstandard1.0/Newtonsoft.Json.dll",
+        "lib/netstandard1.0/Newtonsoft.Json.xml",
+        "lib/netstandard1.3/Newtonsoft.Json.dll",
+        "lib/netstandard1.3/Newtonsoft.Json.xml",
+        "lib/netstandard2.0/Newtonsoft.Json.dll",
+        "lib/netstandard2.0/Newtonsoft.Json.xml",
+        "newtonsoft.json.13.0.3.nupkg.sha512",
+        "newtonsoft.json.nuspec",
+        "packageIcon.png"
+      ]
+    },
+    "Application/1.0.0": {
+      "type": "project",
+      "path": "../Application/Application.csproj",
+      "msbuildProject": "../Application/Application.csproj"
+    },
+    "Dependencies/1.0.0": {
+      "type": "project",
+      "path": "../Dependencies/Dependencies.csproj",
+      "msbuildProject": "../Dependencies/Dependencies.csproj"
+    },
+    "Domain/1.0.0": {
+      "type": "project",
+      "path": "../Domain/Domain.csproj",
+      "msbuildProject": "../Domain/Domain.csproj"
+    },
+    "Models/1.0.0": {
+      "type": "project",
+      "path": "../Models/Models.csproj",
+      "msbuildProject": "../Models/Models.csproj"
+    }
+  },
   "projectFileDependencyGroups": {
-    "net6.0": []
+    "net6.0": [
+      "Application >= 1.0.0",
+      "Domain >= 1.0.0",
+      "Models >= 1.0.0"
+    ]
   },
   "packageFolders": {
     "C:\\Users\\16mdl\\.nuget\\packages\\": {}
@@ -13,9 +252,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Documents\\Programming Projects\\Git-Diff-Generator\\Console\\Console.csproj",
-      "projectName": "Console",
-      "projectPath": "D:\\Documents\\Programming Projects\\Git-Diff-Generator\\Console\\Console.csproj",
+      "projectUniqueName": "D:\\Documents\\Programming Projects\\Git-Diff-Generator\\Console\\ConsoleApp.csproj",
+      "projectName": "ConsoleApp",
+      "projectPath": "D:\\Documents\\Programming Projects\\Git-Diff-Generator\\Console\\ConsoleApp.csproj",
       "packagesPath": "C:\\Users\\16mdl\\.nuget\\packages\\",
       "outputPath": "D:\\Documents\\Programming Projects\\Git-Diff-Generator\\Console\\obj\\",
       "projectStyle": "PackageReference",
@@ -33,7 +272,17 @@
       "frameworks": {
         "net6.0": {
           "targetAlias": "net6.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "D:\\Documents\\Programming Projects\\Git-Diff-Generator\\Application\\Application.csproj": {
+              "projectPath": "D:\\Documents\\Programming Projects\\Git-Diff-Generator\\Application\\Application.csproj"
+            },
+            "D:\\Documents\\Programming Projects\\Git-Diff-Generator\\Domain\\Domain.csproj": {
+              "projectPath": "D:\\Documents\\Programming Projects\\Git-Diff-Generator\\Domain\\Domain.csproj"
+            },
+            "D:\\Documents\\Programming Projects\\Git-Diff-Generator\\Models\\Models.csproj": {
+              "projectPath": "D:\\Documents\\Programming Projects\\Git-Diff-Generator\\Models\\Models.csproj"
+            }
+          }
         }
       },
       "warningProperties": {
