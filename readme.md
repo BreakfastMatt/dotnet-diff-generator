@@ -14,16 +14,17 @@ Example **`config.json`**:
 
 ```json
 {
-  "repositories": [
+  "Repositories": [
     {
-      "name": "Project A",
-      "path": "/path/to/project-a"
+      "Name": "Web",
+      "Path": "C:/Path/To/Repository1"
     },
     {
-      "name": "Project B",
-      "path": "/path/to/project-b"
+      "Name": "Integration",
+      "Path": "C:/Path/To/Repository2"
     }
-  ]
+  ],
+  "OutputPath": "C:/Path/To/Output"
 }
 ```
 
