@@ -8,5 +8,6 @@
       "Name": "Integration",
       "Path": "C:/Path/To/Repository2"
     }
-  ]
+  ],
+  "OutputPath": "C:/Path/To/Output"
 }
