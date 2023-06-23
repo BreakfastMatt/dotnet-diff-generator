@@ -1,4 +1,5 @@
-﻿using Models.Interfaces.Config;
+﻿using System.Diagnostics;
+using Models.Interfaces.Config;
 
 namespace Models.Interfaces.Services.GitCommandRunnerService;
 
@@ -14,12 +15,18 @@ public interface IGitCommandRunnerService
   /// <param name="remote">The remote server to run git commands against</param>
   void SetGitRepoDetail(IRepositoryDetails repoDetail, string remote = "origin");
 
+  /// <summary>
+  /// Utilises the git.exe application installed on the user's machine to execute git commands against a specified repository
+  /// </summary>
+  /// <param name="gitCommand">The actual git command to be run</param>
+  /// <returns>The output of the provided git command</returns>
+  string? ExecuteGitCommand(string gitCommand);
 
   /// <summary>
   /// Checks if there are any outstanding changes on the specified repository
   /// </summary>
   /// <returns>True if there are outstanding changes in your working tree, otherwise false</returns>
-  bool GitCheckWorkingTree();
+  bool CheckWorkingTreeForOutstandingChanges();
 
   /// <summary>
   /// Runs the 'git stash save "diff_generator" --include-untracked' command against the specified repo.
