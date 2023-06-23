@@ -56,7 +56,10 @@ public class GitCommandRunnerService : IGitCommandRunnerService // TODO: error h
 
   public string? GitFetch(string? name = null)
   {
-    throw new NotImplementedException();
+    // Execute the 'git fetch <remote> <name>' command
+    var gitFetchCommand = $"fetch {this.remote} {name}";
+    var fetchOutput = ExecuteGitCommand(gitFetchCommand);
+    return fetchOutput;
   }
 
   public string? GitPull(string? name = null)
@@ -93,12 +96,9 @@ public class GitCommandRunnerService : IGitCommandRunnerService // TODO: error h
     if (gitProcess == null) return null;
     gitProcess.WaitForExit();
 
-    // Check if there was a StandardError result
+    // Check if there was a StandardOutput or StandardError result
     string error = gitProcess.StandardError.ReadToEnd();
-    // TODO: currently not dealing with the error.
-
-    // Check if there was a StandardOutput result
     string output = gitProcess.StandardOutput.ReadToEnd();
-    return output;
+    return string.IsNullOrEmpty(output) ? error : output;
   }
 }

@@ -91,4 +91,19 @@ public class GitCommandRunnerServiceTests
       Assert.That(gitStatusBefore, Is.EqualTo(gitStatusAfter));
     });
   }
+
+  [Test]
+  public void GitFetchCommandTest()
+  {
+    // Arrange
+    var gitCommandRunnerService = new GitCommandRunnerService();
+    var repoDetails = new RepositoryDetails { Name = "Git-Diff-Generator", Path = "D:\\Documents\\Programming Projects\\React Native\\Learning\\HelloWorldProject" };
+    gitCommandRunnerService.SetGitRepoDetail(repoDetails);
+
+    // Act
+    var gitFetch = gitCommandRunnerService.GitFetch("main");
+
+    // Assert
+    Assert.That(gitFetch != null && gitFetch.Contains("branch") && gitFetch.Contains("main") && gitFetch.Contains("FETCH_HEAD"), Is.True);
+  }
 }
