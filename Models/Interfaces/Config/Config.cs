@@ -2,7 +2,12 @@
 
 namespace Models.Interfaces.Config;
 
+/// <inheritdoc/>
 public class Config : IConfig
 {
-  public List<RepositoryDetails> Repositories { get; set; }
+  /// <inheritdoc/>
+  public string OutputPath { get; set; }
+
+  /// <inheritdoc/>
+  public List<RepositoryDetails> RepositoryDetails { get; set; }
 }
