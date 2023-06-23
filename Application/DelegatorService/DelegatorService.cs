@@ -1,15 +1,20 @@
-﻿using Models.Interfaces.Services.Delegator;
+﻿using Application.ValidateRepositoryDetailsService;
+using Models.Interfaces.Services.Delegator;
 using Models.Interfaces.Services.ReadFromConfig;
+using Models.Interfaces.Services.ValidateRepositoryDetails;
 
 namespace Application.DelegatorService;
 
 /// <inheritdoc/>
 public class DelegatorService : IDelegatorService
 {
+  // Inject relevant services
   private readonly IReadFromConfigService readFromConfigService;
-  public DelegatorService(IReadFromConfigService readFromConfigService)
+  private readonly IValidateRepositoryDetailsService validateRepositoryDetailsService;
+  public DelegatorService(IReadFromConfigService readFromConfigService, IValidateRepositoryDetailsService validateRepositoryDetailsService)
   {
     this.readFromConfigService = readFromConfigService;
+    this.validateRepositoryDetailsService = validateRepositoryDetailsService;
   }
 
   /// <inheritdoc/>
@@ -18,8 +23,8 @@ public class DelegatorService : IDelegatorService
     // Fetch Configured Settings from Config.json
     var config = readFromConfigService.ReadFromConfig();
 
-    // Check if the specified branches/tags are present
-    // TODO:
+    // Validate the configured repos
+    var validateConfig = validateRepositoryDetailsService.ValidateRepositoryDetailsAsync(config.RepositoryDetails);
 
     // Fetch the latest changes for the specified branches/tags
     // TODO:
