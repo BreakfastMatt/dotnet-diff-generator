@@ -33,7 +33,7 @@ public class GitCommandRunnerService : IGitCommandRunnerService
 
   public void GitStashSave()
   {
-    throw new NotImplementedException();
+    var gitStash = ExecuteGitCommand($"stash save {GlobalConstants.gitTempStashName}");
   }
 
   public void GitStashPop(string stashName = GlobalConstants.gitTempStashName)

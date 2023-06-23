@@ -50,7 +50,7 @@ public class GitCommandRunnerServiceTests
   }
 
   /// <summary>
-  /// Tests if there are any outstanding changes on the repository using the GitCheckWorkingTree function.
+  /// Tests if there are any outstanding changes on the repository using the CheckWorkingTreeForOutstandingChanges function.
   /// </summary>
   [Test]
   public void CheckWorkingChangesTest()
@@ -65,5 +65,23 @@ public class GitCommandRunnerServiceTests
 
     // Assert
     Assert.That(output, Is.True);
+  }
+
+  /// <summary>
+  /// Tests the GitStashSave function to store any working tree changes in a stash.
+  /// </summary>
+  [Test]
+  public void GitStashSaveTest()
+  {
+    // Arrange
+    var gitCommandRunnerService = new GitCommandRunnerService();
+    var repoDetails = new RepositoryDetails { Name = "Git-Diff-Generator", Path = "D:\\Documents\\Programming Projects\\Git-Diff-Generator" };
+    gitCommandRunnerService.SetGitRepoDetail(repoDetails);
+
+    // Act
+    gitCommandRunnerService.GitStashSave();
+
+    // Assert
+    Assert.Pass();
   }
 }
