@@ -6,7 +6,7 @@ using Models.Models.Config;
 namespace Application.ValidateRepositoryDetailsService;
 
 /// <inheritdoc/>
-public class ValidateRepositoryDetailsService : IValidateRepositoryDetailsService
+public class ValidateRepositoryDetailsService : IValidateRepositoryDetailsService // TODO: implement this service :)
 {
   private readonly IGitCommandRunnerService gitCommandRunnerService;
   public ValidateRepositoryDetailsService(IGitCommandRunnerService gitCommandRunnerService)
@@ -14,25 +14,21 @@ public class ValidateRepositoryDetailsService : IValidateRepositoryDetailsServic
     this.gitCommandRunnerService = gitCommandRunnerService;
   }
 
-  /// <inheritdoc/>
   public async Task<bool> ValidateRepositoryDetailsAsync(List<RepositoryDetails> repoDetailsList)
   {
     throw new NotImplementedException();
   }
 
-  /// <inheritdoc/>
   public async Task<bool> ValidateRepoExistsAsync(IRepositoryDetails repoDetails)
   {
     throw new NotImplementedException();
   }
 
-  /// <inheritdoc/>
   public async Task<bool> ValidateRepoAccessAsync(IRepositoryDetails repoDetails)
   {
     throw new NotImplementedException();
   }
 
-  /// <inheritdoc/>
   public async Task<bool> ValidateBranchExistenceAsync(IRepositoryDetails repoDetails, IEnumerable<string> branchNames)
   {
     throw new NotImplementedException();
