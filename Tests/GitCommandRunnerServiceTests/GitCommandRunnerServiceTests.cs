@@ -13,20 +13,32 @@ public class GitCommandRunnerServiceTests
   [OneTimeSetUp]
   public void InitialiseGitCommandRunnerServiceTestFixture()
   {
-    // Check if there are any changes in the repo
-    // TODO:
+    // Store the working changes
+    var gitCommandRunnerService = new GitCommandRunnerService();
+    var repoDetails = new RepositoryDetails { Name = "Git-Diff-Generator-Test", Path = "D:\\Documents\\Programming Projects\\React Native\\Learning\\HelloWorldProject" };
+    gitCommandRunnerService.SetGitRepoDetail(repoDetails);
 
-    // Stash the changes for the duration of the unit tests
-    // TODO:
+    // Store the working changes
+    var gitStashCommand = "stash save \"Git-Diff-Startup\"";
+    var stashSaveOutput = gitCommandRunnerService.ExecuteGitCommand(gitStashCommand);
+    if (stashSaveOutput != null & stashSaveOutput.Contains("No local changes"))
+    {
+      gitCommandRunnerService.ExecuteGitCommand("stash pop 0");
+      gitCommandRunnerService.ExecuteGitCommand(gitStashCommand);
+  }
   }
 
   /// <summary>
-  /// Cleanup function to be run after every GitCommandRunnerService Unit Test.
+  /// Cleanups the GitCommandRunnerService Test Fixture on exit.
   /// </summary>
-  [TearDown]
-  public void GitCommandRunnerServiceTestCleanup()
+  [OneTimeTearDown]
+  public void CleanupGitCommandRunnerServiceTestFixture()
   {
-    // TODO: potentially do something like restore a git stash here. (might not need this)
+    // Store the working changes
+    var gitCommandRunnerService = new GitCommandRunnerService();
+    var repoDetails = new RepositoryDetails { Name = "Git-Diff-Generator-Test", Path = "D:\\Documents\\Programming Projects\\React Native\\Learning\\HelloWorldProject" };
+    gitCommandRunnerService.SetGitRepoDetail(repoDetails);
+    gitCommandRunnerService.ExecuteGitCommand("stash pop 0");
   }
 
   /// <summary>
@@ -60,7 +72,9 @@ public class GitCommandRunnerServiceTests
     gitCommandRunnerService.SetGitRepoDetail(repoDetails);
 
     // Act
-    var output = gitCommandRunnerService.CheckWorkingTreeForOutstandingChanges();
+    gitCommandRunnerService.ExecuteGitCommand("stash pop 0"); // Bring Back Outstanding Changes
+    var output = gitCommandRunnerService.CheckWorkingTreeForOutstandingChanges(); // Check for Outstanding Changes
+    gitCommandRunnerService.ExecuteGitCommand("stash save \"Git-Diff-Startup\""); // Save changes back to stash
 
     // Assert
     Assert.That(output, Is.True);
@@ -78,10 +92,12 @@ public class GitCommandRunnerServiceTests
     gitCommandRunnerService.SetGitRepoDetail(repoDetails);
 
     // Act
-    var gitStatusBefore = gitCommandRunnerService.ExecuteGitCommand("status");
-    var gitStashSave = gitCommandRunnerService.GitStashSave();
-    var gitRestore = gitCommandRunnerService.GitStashPop();
-    var gitStatusAfter = gitCommandRunnerService.ExecuteGitCommand("status");
+    gitCommandRunnerService.ExecuteGitCommand("stash pop 0"); // Bring Back Outstanding Changes
+    var gitStatusBefore = gitCommandRunnerService.ExecuteGitCommand("status"); // Check before status
+    var gitStashSave = gitCommandRunnerService.GitStashSave(); // Stash current 
+    var gitRestore = gitCommandRunnerService.GitStashPop(); // Pop current
+    var gitStatusAfter = gitCommandRunnerService.ExecuteGitCommand("status"); // Check after status
+    gitCommandRunnerService.ExecuteGitCommand("stash save \"Git-Diff-Startup\""); // Restore Outstanding Changes
 
     // Assert
     Assert.Multiple(() =>
