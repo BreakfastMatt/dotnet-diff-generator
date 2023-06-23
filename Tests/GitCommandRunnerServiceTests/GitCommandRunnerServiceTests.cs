@@ -25,9 +25,9 @@ public class GitCommandRunnerServiceTests
     {
       gitCommandRunnerService.ExecuteGitCommand("stash pop 0");
       gitCommandRunnerService.ExecuteGitCommand(gitStashCommand);
+    }
   }
-  }
-
+  
   /// <summary>
   /// Cleanups the GitCommandRunnerService Test Fixture on exit.
   /// </summary>
@@ -124,5 +124,24 @@ public class GitCommandRunnerServiceTests
 
     // Assert
     Assert.That(gitFetch != null && gitFetch.Contains("branch") && gitFetch.Contains("main") && gitFetch.Contains("FETCH_HEAD"), Is.True);
+  }
+
+  /// <summary>
+  /// Tests the 'git pull' functionality
+  /// </summary>
+  [Test]
+  public void GitPullCommandTest()
+  {
+    // Arrange
+    var gitCommandRunnerService = new GitCommandRunnerService();
+    var repoDetails = new RepositoryDetails { Name = "Git-Diff-Generator", Path = "D:\\Documents\\Programming Projects\\React Native\\Learning\\HelloWorldProject" };
+    gitCommandRunnerService.SetGitRepoDetail(repoDetails);
+
+    // Act
+    gitCommandRunnerService.ExecuteGitCommand("checkout main");
+    var gitPull = gitCommandRunnerService.GitPull("main");
+
+    // Assert
+    Assert.That(gitPull != null && (gitPull.Contains("Already up to date") || gitPull.Contains("Updating")));
   }
 }

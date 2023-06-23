@@ -62,9 +62,12 @@ public class GitCommandRunnerService : IGitCommandRunnerService // TODO: error h
     return fetchOutput;
   }
 
-  public string? GitPull(string? name = null)
+  public string? GitPull(string name)
   {
-    throw new NotImplementedException();
+    // Execute the 'git pull <remote> <name>' command
+    var gitPullCommand = $"pull {this.remote} {name}";
+    var pullOutput = ExecuteGitCommand(gitPullCommand);
+    return pullOutput;
   }
 
   public string? GitLog(string from, string to)
