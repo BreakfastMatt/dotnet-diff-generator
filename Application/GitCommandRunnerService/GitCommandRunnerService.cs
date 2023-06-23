@@ -21,11 +21,11 @@ public class GitCommandRunnerService : IGitCommandRunnerService // TODO: error h
 
   public bool CheckWorkingTreeForOutstandingChanges()
   {
-    // Execute the 'git status' command to check if there are any outstanding changes
+    // Execute the 'git status' command
     var gitStatus = ExecuteGitCommand("status");
     if (string.IsNullOrEmpty(gitStatus)) return false;
 
-    // Check if there are 
+    // Check if there are any outstanding changes on the working tree
     var hasUncommittedChanges = gitStatus.Contains(GlobalConstants.gitUncommittedChanges);
     var hasUnstagedChanges = gitStatus.Contains(GlobalConstants.gitUnstagedChanges);
     var hasUntrackedFiles = gitStatus.Contains(GlobalConstants.gitUntrackedFiles);
@@ -36,22 +36,22 @@ public class GitCommandRunnerService : IGitCommandRunnerService // TODO: error h
   {
     // Execute the 'git stash save stashName' command
     var gitStashCommand = $"stash save \"{GlobalConstants.gitTempStashName}\"";
-    var output = ExecuteGitCommand(gitStashCommand);
-    return output;
+    var stashSaveOutput = ExecuteGitCommand(gitStashCommand);
+    return stashSaveOutput;
   }
 
   public string? GitStashPop(string stashName = GlobalConstants.gitTempStashName)
   {
     // Execute the 'git stash list' command & extract the stash index using a Regex
-    var gitStashList = ExecuteGitCommand("stash list");
-    var stashDetails = gitStashList?.Split('\n')?.FirstOrDefault(stashDetail => stashDetail.Contains(stashName)) ?? string.Empty;
+    var stashListOutput = ExecuteGitCommand("stash list");
+    var stashDetails = stashListOutput?.Split('\n')?.FirstOrDefault(stashDetail => stashDetail.Contains(stashName)) ?? string.Empty;
     var regexMatch = Regex.Matches(stashDetails, @"stash@{(\d+)}").FirstOrDefault();
     if (regexMatch == null || string.IsNullOrEmpty(regexMatch.Value)) return null;
 
     // Execute the 'git stash pop <regexMatch.Value> command
     var gitStashCommand = $"stash pop \"{regexMatch.Value}\"";
-    var stashOutput = ExecuteGitCommand(gitStashCommand);
-    return stashOutput;
+    var stashPopOutput = ExecuteGitCommand(gitStashCommand);
+    return stashPopOutput;
   }
 
   public string? GitFetch(string name)
