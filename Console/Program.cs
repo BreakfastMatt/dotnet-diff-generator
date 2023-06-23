@@ -1,10 +1,12 @@
 ﻿using Application.DelegatorService;
+using Application.GitCommandRunnerService;
 using Application.ReadFromConfig;
 using Application.ValidateRepositoryDetailsService;
 using Domain;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Models.Interfaces.Services.Delegator;
+using Models.Interfaces.Services.GitCommandRunnerService;
 using Models.Interfaces.Services.JsonSerialiser;
 using Models.Interfaces.Services.ReadFromConfig;
 using Models.Interfaces.Services.ValidateRepositoryDetails;
@@ -25,6 +27,7 @@ public class Program
         // Register Services
         services.AddSingleton<IJsonSerialiser, JsonSerialiser>();
         services.AddScoped<IDelegatorService, DelegatorService>();
+        services.AddScoped<IGitCommandRunnerService, GitCommandRunnerService>();
         services.AddScoped<IReadFromConfigService, ReadFromConfigService>();
         services.AddScoped<IValidateRepositoryDetailsService, ValidateRepositoryDetailsService>();
       })
