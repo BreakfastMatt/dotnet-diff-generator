@@ -1,11 +1,12 @@
 ﻿using System.Diagnostics;
+using System.Text.RegularExpressions;
 using Models.Constants;
 using Models.Interfaces.Config;
 using Models.Interfaces.Services.GitCommandRunnerService;
 
 namespace Application.GitCommandRunnerService;
 
-public class GitCommandRunnerService : IGitCommandRunnerService
+public class GitCommandRunnerService : IGitCommandRunnerService // TODO: error handling logic & unit tests need to be added still
 {
   // Repository & Remote details for git commands
   private IRepositoryDetails repositoryDetail;
@@ -41,7 +42,16 @@ public class GitCommandRunnerService : IGitCommandRunnerService
 
   public string? GitStashPop(string stashName = GlobalConstants.gitTempStashName)
   {
-    throw new NotImplementedException();
+    // Execute the 'git stash list' command & extract the stash index using a Regex
+    var gitStashList = ExecuteGitCommand("stash list");
+    var stashDetails = gitStashList?.Split('\n')?.FirstOrDefault(stashDetail => stashDetail.Contains(stashName)) ?? string.Empty;
+    var regexMatch = Regex.Matches(stashDetails, @"stash@{(\d+)}").FirstOrDefault();
+    if (regexMatch == null || string.IsNullOrEmpty(regexMatch.Value)) return null;
+
+    // Execute the 'git stash pop <regexMatch.Value> command
+    var gitStashCommand = $"stash pop \"{regexMatch.Value}\"";
+    var stashOutput = ExecuteGitCommand(gitStashCommand);
+    return stashOutput;
   }
 
   public string? GitFetch(string? name = null)
@@ -87,7 +97,7 @@ public class GitCommandRunnerService : IGitCommandRunnerService
     string error = gitProcess.StandardError.ReadToEnd();
     // TODO: currently not dealing with the error.
 
-    // Check if there was a StandardOutput result or StandardError result
+    // Check if there was a StandardOutput result
     string output = gitProcess.StandardOutput.ReadToEnd();
     return output;
   }

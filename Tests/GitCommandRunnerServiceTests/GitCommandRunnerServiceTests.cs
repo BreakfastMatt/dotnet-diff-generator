@@ -27,7 +27,7 @@ public class GitCommandRunnerServiceTests
   [TearDown]
   public void GitCommandRunnerServiceTestCleanup()
   {
-    // Restore the git stash 
+    // Restore the git stash
   }
 
   /// <summary>
@@ -68,20 +68,28 @@ public class GitCommandRunnerServiceTests
   }
 
   /// <summary>
-  /// Tests the GitStashSave function to store any working tree changes in a stash.
+  /// Tests the git stash save and apply functions
   /// </summary>
   [Test]
-  public void GitStashSaveTest()
+  public void GitStashSaveAndRestoreTest()
   {
     // Arrange
     var gitCommandRunnerService = new GitCommandRunnerService();
-    var repoDetails = new RepositoryDetails { Name = "Git-Diff-Generator", Path = "D:\\Documents\\Programming Projects\\Git-Diff-Generator" };
+    var repoDetails = new RepositoryDetails { Name = "Git-Diff-Generator", Path = "D:\\Documents\\Programming Projects\\React Native\\Learning\\HelloWorldProject" };
     gitCommandRunnerService.SetGitRepoDetail(repoDetails);
 
     // Act
-    gitCommandRunnerService.GitStashSave();
+    var gitStatusBefore = gitCommandRunnerService.ExecuteGitCommand("status");
+    var gitStashSave = gitCommandRunnerService.GitStashSave();
+    var gitRestore = gitCommandRunnerService.GitStashPop();
+    var gitStatusAfter = gitCommandRunnerService.ExecuteGitCommand("status");
 
     // Assert
-    Assert.Pass();
+    Assert.Multiple(() =>
+    {
+      Assert.That(gitStashSave?.Contains("Saved working directory") ?? false, Is.True);
+      Assert.That(gitRestore?.Contains("Dropped stash") ?? false, Is.True);
+      Assert.That(gitStatusBefore, Is.EqualTo(gitStatusAfter));
+    });
   }
 }
