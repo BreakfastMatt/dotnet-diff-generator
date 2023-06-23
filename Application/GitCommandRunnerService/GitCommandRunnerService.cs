@@ -64,13 +64,18 @@ public class GitCommandRunnerService : IGitCommandRunnerService
     // Configures the ProcessStartInfo needed to execute the provided git command
     var processStartInfo = new ProcessStartInfo
     {
+      // The specific git command to run
       FileName = "git",
       Arguments = gitCommand,
+
+      // The Repository To run against
       WorkingDirectory = repositoryDetail.Path,
-      RedirectStandardOutput = true,
-      RedirectStandardError = true,
+
+      // Terminal Details
+      CreateNoWindow = true,
       UseShellExecute = false,
-      CreateNoWindow = true
+      RedirectStandardOutput = true,
+      RedirectStandardError = true
     };
 
     // Execute the git command using the ProcessStartInfo
