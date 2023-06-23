@@ -32,14 +32,15 @@ public interface IGitCommandRunnerService
   /// Runs the 'git stash save "diff_generator" --include-untracked' command against the specified repo.
   /// This will stash any outstanding changes currently in the working tree
   /// </summary>
-  void GitStashSave();
+  /// <returns>The output of the 'git stash' command</returns>
+  string? GitStashSave();
 
   /// <summary>
   /// Runs the 'git pop "<paramref name="stashName"/>"' command against the specified repo.
   /// This will restore the working tree to its original status.
   /// </summary>
   /// <param name="stashName"></param>
-  void GitStashPop(string stashName = "diff_generator");
+  string? GitStashPop(string stashName);
 
   /// <summary>
   /// TODO: confirm the commands below
@@ -48,14 +49,14 @@ public interface IGitCommandRunnerService
   /// This will fetch the exact changes for the specified branch or tag.
   /// </summary>
   /// <param name="name">The name of the branch or tag</param>
-  void GitFetch(string? name = null);
+  string? GitFetch(string? name = null);
 
   /// <summary>
   /// Runs the 'git pull origin <paramref name="name"/>' command.
   /// This will pull the specific changes for the specified branch or tag.
   /// </summary>
   /// <param name="name">The name of the branch or tag</param>
-  void GitPull(string? name = null);
+  string? GitPull(string? name = null);
 
   /// <summary>
   /// TODO: confirm the command below
@@ -65,5 +66,5 @@ public interface IGitCommandRunnerService
   /// <param name="from">The name of the branch or tag to go from</param>
   /// <param name="to">The name of the branch or tag to go to</param>
   /// <returns>The generated diff</returns>
-  string GitLog(string from, string to);
+  string? GitLog(string from, string to);
 }

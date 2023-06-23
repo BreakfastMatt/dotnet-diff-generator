@@ -31,27 +31,30 @@ public class GitCommandRunnerService : IGitCommandRunnerService
     return hasUncommittedChanges || hasUnstagedChanges || hasUntrackedFiles;
   }
 
-  public void GitStashSave()
+  public string? GitStashSave()
   {
-    var gitStash = ExecuteGitCommand($"stash save {GlobalConstants.gitTempStashName}");
+    // Execute the 'git stash save stashName' command
+    var gitStashCommand = $"stash save \"{GlobalConstants.gitTempStashName}\"";
+    var output = ExecuteGitCommand(gitStashCommand);
+    return output;
   }
 
-  public void GitStashPop(string stashName = GlobalConstants.gitTempStashName)
-  {
-    throw new NotImplementedException();
-  }
-
-  public void GitFetch(string? name = null)
+  public string? GitStashPop(string stashName = GlobalConstants.gitTempStashName)
   {
     throw new NotImplementedException();
   }
 
-  public void GitPull(string? name = null)
+  public string? GitFetch(string? name = null)
   {
     throw new NotImplementedException();
   }
 
-  public string GitLog(string from, string to)
+  public string? GitPull(string? name = null)
+  {
+    throw new NotImplementedException();
+  }
+
+  public string? GitLog(string from, string to)
   {
     throw new NotImplementedException();
   }
