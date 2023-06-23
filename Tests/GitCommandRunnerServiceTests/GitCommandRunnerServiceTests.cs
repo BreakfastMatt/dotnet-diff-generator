@@ -1,9 +1,10 @@
 ﻿using Application.GitCommandRunnerService;
 using Models.Models.Config;
 
-namespace Tests.ServiceTests;
+namespace Tests.ApplicationServiceTests;
 
 [TestFixture]
+// TODO: note a mock repo needs to be setup to test against here (will add a config.json file to the test project to allow this to be configured by the user)
 public class GitCommandRunnerServiceTests
 {
   /// <summary>
@@ -13,9 +14,7 @@ public class GitCommandRunnerServiceTests
   public void InitialiseGitCommandRunnerServiceTestFixture()
   {
     // Check if there are any changes in the repo
-    var gitCommandRunnerService = new GitCommandRunnerService();
-    var repoDetails = new RepositoryDetails { Name = "Git-Diff-Generator", Path = "D:\\Documents\\Programming Projects\\Git-Diff-Generator" };
-    gitCommandRunnerService.SetGitRepoDetail(repoDetails);
+    // TODO:
 
     // Stash the changes for the duration of the unit tests
     // TODO:
@@ -27,7 +26,7 @@ public class GitCommandRunnerServiceTests
   [TearDown]
   public void GitCommandRunnerServiceTestCleanup()
   {
-    // Restore the git stash
+    // TODO: potentially do something like restore a git stash here. (might not need this)
   }
 
   /// <summary>
