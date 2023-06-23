@@ -54,7 +54,7 @@ public class GitCommandRunnerService : IGitCommandRunnerService // TODO: error h
     return stashOutput;
   }
 
-  public string? GitFetch(string? name = null)
+  public string? GitFetch(string name)
   {
     // Execute the 'git fetch <remote> <name>' command
     var gitFetchCommand = $"fetch {this.remote} {name}";

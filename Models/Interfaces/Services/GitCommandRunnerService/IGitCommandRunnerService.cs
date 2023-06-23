@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using Models.Interfaces.Config;
+﻿using Models.Interfaces.Config;
 
 namespace Models.Interfaces.Services.GitCommandRunnerService;
 
@@ -49,14 +48,14 @@ public interface IGitCommandRunnerService
   /// This will fetch the exact changes for the specified branch or tag.
   /// </summary>
   /// <param name="name">The name of the branch or tag</param>
-  string? GitFetch(string? name = null);
+  string? GitFetch(string name);
 
   /// <summary>
   /// Runs the 'git pull origin <paramref name="name"/>' command.
   /// This will pull the specific changes for the specified branch or tag.
   /// </summary>
   /// <param name="name">The name of the branch or tag</param>
-  string? GitPull(string? name = null);
+  string? GitPull(string name);
 
   /// <summary>
   /// TODO: confirm the command below

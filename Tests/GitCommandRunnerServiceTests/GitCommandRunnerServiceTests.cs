@@ -92,6 +92,9 @@ public class GitCommandRunnerServiceTests
     });
   }
 
+  /// <summary>
+  /// Tests the 'git fetch' functionality
+  /// </summary>
   [Test]
   public void GitFetchCommandTest()
   {
