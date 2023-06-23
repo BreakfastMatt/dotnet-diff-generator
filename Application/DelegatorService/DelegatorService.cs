@@ -1,5 +1,4 @@
-﻿using Application.ValidateRepositoryDetailsService;
-using Models.Interfaces.Services.Delegator;
+﻿using Models.Interfaces.Services.Delegator;
 using Models.Interfaces.Services.ReadFromConfig;
 using Models.Interfaces.Services.ValidateRepositoryDetails;
 

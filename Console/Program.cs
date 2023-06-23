@@ -2,7 +2,7 @@
 using Application.GitCommandRunnerService;
 using Application.ReadFromConfig;
 using Application.ValidateRepositoryDetailsService;
-using Domain;
+using Domain.JsonSerialiser;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Models.Interfaces.Services.Delegator;
