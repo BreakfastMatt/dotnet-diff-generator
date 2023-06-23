@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 using Models.Constants;
-﻿using Models.Interfaces.Config;
+using Models.Interfaces.Config;
 using Models.Interfaces.Services.GitCommandRunnerService;
 
 namespace Application.GitCommandRunnerService;
@@ -20,7 +20,15 @@ public class GitCommandRunnerService : IGitCommandRunnerService
 
   public bool CheckWorkingTreeForOutstandingChanges()
   {
-    throw new NotImplementedException();
+    // Execute the 'git status' command to check if there are any outstanding changes
+    var gitStatus = ExecuteGitCommand("status");
+    if (string.IsNullOrEmpty(gitStatus)) return false;
+
+    // Check if there are 
+    var hasUncommittedChanges = gitStatus.Contains(GlobalConstants.gitUncommittedChanges);
+    var hasUnstagedChanges = gitStatus.Contains(GlobalConstants.gitUnstagedChanges);
+    var hasUntrackedFiles = gitStatus.Contains(GlobalConstants.gitUntrackedFiles);
+    return hasUncommittedChanges || hasUnstagedChanges || hasUntrackedFiles;
   }
 
   public void GitStashSave()
