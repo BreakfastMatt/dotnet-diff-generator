@@ -37,7 +37,7 @@ public class GitCommandRunnerServiceTests
   {
     // Arrange
     var gitCommandRunnerService = new GitCommandRunnerService();
-    var repoDetails = new RepositoryDetails { Name = "Git-Diff-Generator", Path = "D:\\Documents\\Programming Projects\\Git-Diff-Generator" };
+    var repoDetails = new RepositoryDetails { Name = "Git-Diff-Generator-Test", Path = "D:\\Documents\\Programming Projects\\React Native\\Learning\\HelloWorldProject" };
     gitCommandRunnerService.SetGitRepoDetail(repoDetails);
     var gitCommand = "status";
 
@@ -56,7 +56,7 @@ public class GitCommandRunnerServiceTests
   {
     // Arrange
     var gitCommandRunnerService = new GitCommandRunnerService();
-    var repoDetails = new RepositoryDetails { Name = "Git-Diff-Generator", Path = "D:\\Documents\\Programming Projects\\Git-Diff-Generator" };
+    var repoDetails = new RepositoryDetails { Name = "Git-Diff-Generator-Test", Path = "D:\\Documents\\Programming Projects\\React Native\\Learning\\HelloWorldProject" };
     gitCommandRunnerService.SetGitRepoDetail(repoDetails);
 
     // Act
@@ -74,7 +74,7 @@ public class GitCommandRunnerServiceTests
   {
     // Arrange
     var gitCommandRunnerService = new GitCommandRunnerService();
-    var repoDetails = new RepositoryDetails { Name = "Git-Diff-Generator", Path = "D:\\Documents\\Programming Projects\\React Native\\Learning\\HelloWorldProject" };
+    var repoDetails = new RepositoryDetails { Name = "Git-Diff-Generator-Test", Path = "D:\\Documents\\Programming Projects\\React Native\\Learning\\HelloWorldProject" };
     gitCommandRunnerService.SetGitRepoDetail(repoDetails);
 
     // Act
