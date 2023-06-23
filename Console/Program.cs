@@ -1,36 +1,37 @@
 ﻿using Application.ReadFromConfig;
 using Domain;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Models.Interfaces.Services.JsonSerialiser;
 using Models.Interfaces.Services.ReadFromConfig;
 
 namespace ConsoleApp;
 
 public class Program
 {
-  //private readonly IReadFromConfigService readFromConfigService;
-  //public Program(IReadFromConfigService readFromConfigService)
-  //{
-  //  this.readFromConfigService = readFromConfigService;
-  //}
-
   /// <summary>
   /// The main console application entry point
   /// </summary>
-  public static void Main()
+  public static void Main(string[] args)
   {
-    // TODO: tmep
-    TempTest();
+    // Create DI Container
+    using var host = Host.CreateDefaultBuilder(args)
+      .ConfigureServices(services =>
+      {
+        // Register Services
+        services.AddSingleton<IJsonSerialiser, JsonSerialiser>();
+        services.AddScoped<IReadFromConfigService, ReadFromConfigService>();
+      })
+      .Build();
+
+    // Resolve the dependencies
+    var service = host.Services.GetRequiredService<IReadFromConfigService>(); // TODO: calling this service for now (proof of concept)
+
+    // Use the service
+    service.ReadFromConfig();
 
     // Prevent automatic console closure
     Console.WriteLine("Press any key to exit...");
     Console.ReadKey();
-  }
-
-  public static void TempTest()
-  {
-    // TODO: temp logic, need a proper way to do this.
-    // TODO: note project references need to be removed after this
-    var jsonSerialiser = new JsonSerialiser();
-    var readFromConfigService = new ReadFromConfigService(jsonSerialiser);
-    var configDetails = readFromConfigService.ReadFromConfig();
   }
 }

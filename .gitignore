@@ -11,7 +11,6 @@
 *.sln.docstates
 *.vs/
 
-
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 
@@ -192,6 +191,7 @@ PublishScripts/
 # NuGet Symbol Packages
 *.snupkg
 # The packages folder can be ignored because of Package Restore
+/packages/
 **/[Pp]ackages/*
 # except build/, which is used as an MSBuild target.
 !**/[Pp]ackages/build/
@@ -200,6 +200,11 @@ PublishScripts/
 # NuGet v3's project.json files produces more ignorable files
 *.nuget.props
 *.nuget.targets
+
+# NuGet restore files
+*.nuget.dgspec
+nuget.g.props
+nuget.g.targets
 
 # Microsoft Azure Build Output
 csx/
