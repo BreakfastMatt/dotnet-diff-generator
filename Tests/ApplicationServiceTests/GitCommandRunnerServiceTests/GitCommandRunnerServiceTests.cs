@@ -186,6 +186,6 @@ public class GitCommandRunnerServiceTests
     var gitLog = await gitCommandRunnerService.GitLogAsync("11.8.1_hotfix_15052023", "11.8.2_hotfix_05062023");
 
     // Assert
-    Assert.Pass(); // TODO: temporary
+    Assert.That(string.IsNullOrEmpty(gitLog), Is.False);
   }
 }

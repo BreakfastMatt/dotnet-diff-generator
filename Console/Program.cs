@@ -1,6 +1,6 @@
 ﻿using Application.DelegatorService;
 using Application.GitCommandRunnerService;
-using Application.ReadFromConfig;
+using Application.ReadFromConfigService;
 using Application.ValidateRepositoryDetailsService;
 using Domain.JsonSerialiser;
 using Microsoft.Extensions.DependencyInjection;

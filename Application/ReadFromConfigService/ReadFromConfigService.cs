@@ -3,7 +3,7 @@ using Models.Interfaces.Services.JsonSerialiser;
 using Models.Interfaces.Services.ReadFromConfig;
 using Models.Models.Config;
 
-namespace Application.ReadFromConfig;
+namespace Application.ReadFromConfigService;
 
 /// <inheritdoc/>
 public class ReadFromConfigService : IReadFromConfigService
