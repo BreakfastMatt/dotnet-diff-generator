@@ -1,6 +1,6 @@
 ﻿using Domain.JsonSerialiser;
 
-namespace Tests.DomainServiceTests.JsonSerialiserTests;
+namespace Tests.DomainServiceTests;
 
 [TestFixture]
 public class JsonSerialiserTests

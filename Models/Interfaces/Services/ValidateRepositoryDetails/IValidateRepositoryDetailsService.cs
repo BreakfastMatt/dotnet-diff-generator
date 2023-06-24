@@ -35,5 +35,5 @@ public interface IValidateRepositoryDetailsService
   /// <param name="repoDetails">The repo to be validated</param>
   /// <param name="branchNames">The name of the branches/tags to check</param>
   /// <returns>True if the branches/tags exist on the repo, otherwise false</returns>
-  Task<bool> ValidateBranchExistenceAsync(IRepositoryDetails repoDetails, IEnumerable<string> branchNames);
+  Task<bool> ValidateBranchExistenceAsync(IRepositoryDetails repoDetails, IEnumerable<string> names);
 }
