@@ -1,5 +1,7 @@
-﻿using Models.Interfaces.Config;
+﻿using System.Text;
+using Models.Interfaces.Config;
 using Models.Interfaces.Services.DelegatorService;
+using Models.Interfaces.Services.DiffGenerationService;
 using Models.Interfaces.Services.GitCommandRunnerService;
 using Models.Interfaces.Services.PromptUserInputService;
 using Models.Interfaces.Services.ReadFromConfigService;
@@ -9,29 +11,25 @@ namespace Application.DelegatorService;
 
 public class DelegatorService : IDelegatorService
 {
-  // Short-Circuiting logic
-  private bool shortCircuitValidation = false;
-  private bool shortCircuitRepoFetch = false;
-  private bool shortCircuitDiffGeneration = false;
-  private bool shortCircuitDiffClean = false;
-
-  // Diffs
-  private string rawDiffs;
-  private string cleanDiffs;
-
   // Inject relevant services
   private readonly IReadFromConfigService readFromConfigService;
   private readonly IPromptUserInputService promptUserInputService;
   private readonly IValidateRepositoryDetailsService validateRepositoryDetailsService;
   private readonly IGitCommandRunnerService gitCommandRunnerService;
-  public DelegatorService(IReadFromConfigService readFromConfigService, IPromptUserInputService promptUserInputService, IValidateRepositoryDetailsService validateRepositoryDetailsService, IGitCommandRunnerService gitCommandRunnerService)
+  private readonly IDiffGenerationService diffGenerationService;
+  public DelegatorService(IReadFromConfigService readFromConfigService, IPromptUserInputService promptUserInputService, IValidateRepositoryDetailsService validateRepositoryDetailsService,
+    IGitCommandRunnerService gitCommandRunnerService, IDiffGenerationService diffGenerationService)
   {
     this.readFromConfigService = readFromConfigService;
     this.promptUserInputService = promptUserInputService;
     this.validateRepositoryDetailsService = validateRepositoryDetailsService;
     this.gitCommandRunnerService = gitCommandRunnerService;
+    this.diffGenerationService = diffGenerationService;
   }
 
+  // Short-Circuiting logic
+  private bool shortCircuitValidation = false;
+  private bool shortCircuitRepoFetch = false;
   private void ResetShortCircuitingIndicators(List<string> currentNames, List<string> previousNames)
   {
     // Resets the short-circuit indicators
@@ -41,8 +39,6 @@ public class DelegatorService : IDelegatorService
     {
       shortCircuitValidation = false;
       shortCircuitRepoFetch = false;
-      shortCircuitDiffGeneration = false;
-      shortCircuitDiffClean = false;
     }
   }
 
@@ -92,14 +88,11 @@ public class DelegatorService : IDelegatorService
     var build = fetchSucceeded ? promptUserInputService.PromptBuildName() : null;
 
     // 3) Generate the raw diffs for the specified branches/tags
-    var diffSucceeded = fetchSucceeded && await GenerateRawDiffsForRepositoriesAsync(config, names);
+    // TODO:
 
-    // 4) Cleanup & Group the diffs
-    var diffCleaningSucceeded = diffSucceeded && await CleanAndGroupDiffsAsync(this.rawDiffs);
-
-    // 5) Save the cleaned diff to the configured path
-    var diffSaveSucceeded = diffCleaningSucceeded && await SaveDiffsToOutputAsync(build, this.cleanDiffs);
-    return diffSaveSucceeded;
+    // 4) Save the cleaned diff to the configured path
+    // TODO:
+    return false;
   }
 
   private async Task<bool> RunValidationAsync(IConfig config, List<string> names)
@@ -146,51 +139,5 @@ public class DelegatorService : IDelegatorService
     // Check if section ran successfully
     shortCircuitRepoFetch = fetchLatestChanges;
     return fetchLatestChanges;
-  }
-
-  private async Task<bool> GenerateRawDiffsForRepositoriesAsync(IConfig config, List<string> names)
-  {
-    // Short-Circuiting Logic
-    if (shortCircuitDiffGeneration)
-    {
-      // The section passed previously so we'll skip it on this iteration
-      Console.WriteLine("Skipping raw diff generation...");
-      return true;
-    }
-
-    // Prompt user for build folder & generate raw diffs for repositories
-    Console.WriteLine("Generating diffs for repositories...");
-    var diffGeneration = true; // TODO: add service to generate & clean diffs.
-    this.rawDiffs = ""; // TODO:
-
-    // Check if section ran successfully
-    shortCircuitDiffGeneration = diffGeneration;
-    return diffGeneration;
-  }
-
-  private async Task<bool> CleanAndGroupDiffsAsync(string rawDiffs)
-  {
-    // Short-Circuiting Logic
-    if (shortCircuitDiffClean)
-    {
-      // The section passed previously so we'll skip it on this iteration
-      Console.WriteLine("Skipping diff cleaning and grouping...");
-      return true;
-    }
-
-    // Prompt user for build folder & generate raw diffs for repositories
-    Console.WriteLine("Cleaning and grouping diffs for repositories...");
-    var cleanDiffs = true; // TODO: add service to generate & clean diffs.
-    this.cleanDiffs = ""; // TODO:
-
-    // Check if section ran successfully
-    shortCircuitDiffClean = cleanDiffs;
-    return cleanDiffs;
-  }
-
-  private async Task<bool> SaveDiffsToOutputAsync(string build, string cleanedDiffs)
-  {
-    // TODO: add logic.
-    return true;
   }
 }
