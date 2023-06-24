@@ -5,8 +5,8 @@ using Models.Models.Config;
 
 namespace Application.ValidateRepositoryDetailsService;
 
-/// <inheritdoc/>
-public class ValidateRepositoryDetailsService : IValidateRepositoryDetailsService // TODO: implement this service :)
+// TODO: implement this service :)
+public class ValidateRepositoryDetailsService : IValidateRepositoryDetailsService
 {
   private readonly IGitCommandRunnerService gitCommandRunnerService;
   public ValidateRepositoryDetailsService(IGitCommandRunnerService gitCommandRunnerService)

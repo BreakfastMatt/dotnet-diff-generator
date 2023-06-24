@@ -4,7 +4,6 @@ using Models.Interfaces.Services.ValidateRepositoryDetails;
 
 namespace Application.DelegatorService;
 
-/// <inheritdoc/>
 public class DelegatorService : IDelegatorService
 {
   // Inject relevant services
@@ -16,7 +15,6 @@ public class DelegatorService : IDelegatorService
     this.validateRepositoryDetailsService = validateRepositoryDetailsService;
   }
 
-  /// <inheritdoc/>
   public Task GetResponseAsync()
   {
     // Fetch Configured Settings from Config.json
