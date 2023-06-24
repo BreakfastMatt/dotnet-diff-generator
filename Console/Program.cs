@@ -1,4 +1,5 @@
 ﻿using Application.DelegatorService;
+using Application.DiffGenerationService;
 using Application.GitCommandRunnerService;
 using Application.PromptUserInputService;
 using Application.ReadFromConfigService;
@@ -7,6 +8,7 @@ using Domain.JsonSerialiser;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Models.Interfaces.Services.DelegatorService;
+using Models.Interfaces.Services.DiffGenerationService;
 using Models.Interfaces.Services.GitCommandRunnerService;
 using Models.Interfaces.Services.JsonSerialiser;
 using Models.Interfaces.Services.PromptUserInputService;
@@ -38,6 +40,7 @@ public class Program
         services.AddScoped<IReadFromConfigService, ReadFromConfigService>();
         services.AddScoped<IPromptUserInputService, PromptUserInputService>();
         services.AddScoped<IValidateRepositoryDetailsService, ValidateRepositoryDetailsService>();
+        services.AddScoped<IDiffGenerationService, DiffGenerationService>();
       })
       .Build();
 
