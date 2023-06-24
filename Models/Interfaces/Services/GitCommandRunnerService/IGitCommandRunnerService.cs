@@ -38,32 +38,40 @@ public interface IGitCommandRunnerService
   /// Runs the 'git pop "<paramref name="stashName"/>"' command against the specified repo.
   /// This will restore the working tree to its original status.
   /// </summary>
-  /// <param name="stashName"></param>
+  /// <param name="stashName">Name of the stash to pop</param>
+  /// <returns>The output of the 'git pop' command</returns>
   string? GitStashPop(string stashName);
 
   /// <summary>
-  /// TODO: confirm the commands below
-  /// Runs the 'git fetch origin refs/tags/<paramref name="name"/>:refs/tags/<paramref name="name"/>' command for tags.
-  /// Or Runs the the 'git fetch origin <paramref name="name"/>' command for branches.
+  /// Or Runs the the 'git fetch origin <paramref name="name"/>' command.
   /// This will fetch the exact changes for the specified branch or tag.
   /// </summary>
   /// <param name="name">The name of the branch or tag</param>
+  /// <returns>The output of the 'git fetch' command</returns>
   string? GitFetch(string name);
+
+  /// <summary>
+  /// Runs the 'git checkout <paramref name="name"/>' command against the specified repo.
+  /// This will checkout the <paramref name="name"/> branch.
+  /// </summary>
+  /// <param name="name">The name of the branch or tag</param>
+  /// <returns>The output of the 'git checkout' command</returns>
+  string? GitCheckout(string name);
 
   /// <summary>
   /// Runs the 'git pull origin <paramref name="name"/>' command.
   /// This will pull the specific changes for the specified branch or tag.
   /// </summary>
   /// <param name="name">The name of the branch or tag</param>
+  /// <returns>The output of the 'git pull' command</returns>
   string? GitPull(string name);
 
   /// <summary>
-  /// TODO: confirm the command below
-  /// Runs the 'git log <paramref name="from"/>..<paramref name="to"/> --pretty=format: %an`t%s --no-merges command' command.
+  /// Runs the 'git log <paramref name="from"/>..<paramref name = "to" /> --pretty=format:"%an=====%s --no-merges" command.
   /// This will generate the diffs between the specified branches/tags
   /// </summary>
   /// <param name="from">The name of the branch or tag to go from</param>
   /// <param name="to">The name of the branch or tag to go to</param>
-  /// <returns>The generated diff</returns>
-  string? GitLog(string from, string to);
+  /// <returns>The generated diff output from the 'git log' command</returns>
+  Task<string?> GitLogAsync(string from, string to);
 }
