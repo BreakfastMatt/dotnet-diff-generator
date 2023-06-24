@@ -169,10 +169,10 @@ public class GitCommandRunnerServiceTests
   }
 
   /// <summary>
-  /// Tests the 'git log' functionality
+  /// Tests the 'git log' functionality using branches
   /// </summary>
   [Test]
-  public async Task GitLogCommandTest()
+  public async Task GitLogCommandTestBranches()
   {
     // Arrange
     var gitCommandRunnerService = new GitCommandRunnerService();
@@ -186,6 +186,29 @@ public class GitCommandRunnerServiceTests
     var gitLog = await gitCommandRunnerService.GitLogAsync("11.8.1_hotfix_15052023", "11.8.2_hotfix_05062023");
 
     // Assert
-    Assert.That(string.IsNullOrEmpty(gitLog), Is.False);
+    var gitLogFailed = gitLog?.Contains("unknown revision") ?? true;
+    Assert.That(gitLogFailed, Is.False);
+  }
+
+  /// <summary>
+  /// Tests the 'git log' functionality using tags
+  /// </summary>
+  [Test]
+  public async Task GitLogCommandTestTags()
+  {
+    // Arrange
+    var gitCommandRunnerService = new GitCommandRunnerService();
+    var repoDetails = new RepositoryDetails { Name = "Git-Diff-Generator", Path = repoName };
+    gitCommandRunnerService.SetGitRepoDetail(repoDetails);
+
+    // Act
+    var gitFetchFrom = await gitCommandRunnerService.GitFetchAsync("11.8.1.0");
+    var gitFetchTo = await gitCommandRunnerService.GitFetchAsync("11.8.2");
+    var gitStatus = await gitCommandRunnerService.ExecuteGitCommandAsync("status");
+    var gitLog = await gitCommandRunnerService.GitLogAsync("11.8.1.0", "11.8.2");
+
+    // Assert
+    var gitLogFailed = gitLog?.Contains("unknown revision") ?? true;
+    Assert.That(gitLogFailed, Is.False);
   }
 }

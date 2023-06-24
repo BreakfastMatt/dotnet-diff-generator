@@ -13,4 +13,8 @@ public class GlobalConstants
   public const string gitUncommittedChanges = "Changes to be committed";
   public const string gitUnstagedChanges = "Changes not staged";
   public const string gitUntrackedFiles = "Untracked files";
+
+  // Diff Generation Service Constants
+  public const string diffEpicNotCaptured = "EpicNotCaptured";
+  public const string diffCommitWithoutReference = "CommitsWithoutReferences";
 }

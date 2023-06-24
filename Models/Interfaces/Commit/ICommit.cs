@@ -15,12 +15,12 @@ public interface ICommit
   /// <summary>
   /// The Epic link for the commit (if applicable)
   /// </summary>
-  public string EpicLink { get; set; }
+  public string? EpicLink { get; set; }
 
   /// <summary>
-  /// The JIRA reference for the commit (if provided)
+  /// The JIRA references for the commit (if provided)
   /// </summary>
-  public string Reference { get; set; }
+  public List<string> References { get; set; }
 
   /// <summary>
   /// Whether the commit was committed according to project standards
