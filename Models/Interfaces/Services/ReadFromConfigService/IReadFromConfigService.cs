@@ -1,4 +1,4 @@
-﻿using Models.Models.Config;
+﻿using Models.Interfaces.Config;
 
 namespace Models.Interfaces.Services.ReadFromConfigService;
 

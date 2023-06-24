@@ -1,9 +1,9 @@
-﻿using Models.Interfaces.Services.DelegatorService;
+﻿using Models.Interfaces.Config;
+using Models.Interfaces.Services.DelegatorService;
 using Models.Interfaces.Services.GitCommandRunnerService;
 using Models.Interfaces.Services.PromptUserInputService;
 using Models.Interfaces.Services.ReadFromConfigService;
 using Models.Interfaces.Services.ValidateRepositoryDetailsService;
-using Models.Models.Config;
 
 namespace Application.DelegatorService;
 

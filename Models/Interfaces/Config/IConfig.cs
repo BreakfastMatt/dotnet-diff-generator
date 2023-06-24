@@ -1,4 +1,6 @@
-﻿namespace Models.Models.Config;
+﻿using Models.Models.Config;
+
+namespace Models.Interfaces.Config;
 
 /// <summary>
 /// The JSON config file details
