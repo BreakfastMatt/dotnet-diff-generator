@@ -2,12 +2,12 @@
   "Repositories": [
     {
       "Name": "Web",
-      "Path": "C:/Path/To/Repository1"
+      "Path": "C:\\Path\\To\\Repository1"
     },
     {
-      "Name": "Integration",
-      "Path": "C:/Path/To/Repository2"
+      "Name": "Api",
+      "Path": "C:\\Path\\To\\Repository2"
     }
   ],
-  "OutputPath": "C:/Path/To/Output"
+  "OutputPath": "C:\\Path\\To\\Output"
 }
