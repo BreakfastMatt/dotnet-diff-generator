@@ -1,6 +1,6 @@
 ﻿using Models.Interfaces.Config;
 using Models.Interfaces.Services.JsonSerialiser;
-using Models.Interfaces.Services.ReadFromConfig;
+using Models.Interfaces.Services.ReadFromConfigService;
 using Models.Models.Config;
 
 namespace Application.ReadFromConfigService;

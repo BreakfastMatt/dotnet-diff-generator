@@ -1,6 +1,6 @@
-﻿using Models.Interfaces.Services.Delegator;
-using Models.Interfaces.Services.ReadFromConfig;
-using Models.Interfaces.Services.ValidateRepositoryDetails;
+﻿using Models.Interfaces.Services.DelegatorService;
+using Models.Interfaces.Services.ReadFromConfigService;
+using Models.Interfaces.Services.ValidateRepositoryDetailsService;
 
 namespace Application.DelegatorService;
 
@@ -8,6 +8,7 @@ public class DelegatorService : IDelegatorService
 {
   // Inject relevant services
   private readonly IReadFromConfigService readFromConfigService;
+  //private readonly IPromptUserInputService promptUserInputService;
   private readonly IValidateRepositoryDetailsService validateRepositoryDetailsService;
   public DelegatorService(IReadFromConfigService readFromConfigService, IValidateRepositoryDetailsService validateRepositoryDetailsService)
   {
@@ -15,13 +16,16 @@ public class DelegatorService : IDelegatorService
     this.validateRepositoryDetailsService = validateRepositoryDetailsService;
   }
 
-  public Task GetResponseAsync()
+  public async Task GetResponseAsync()
   {
     // Fetch Configured Settings from Config.json
     var config = readFromConfigService.ReadFromConfig();
 
+    // Prompt the user for input
+    var names = new List<string> { }; // TODO:
+
     // Validate the configured repos
-    var validateConfig = validateRepositoryDetailsService.ValidateRepositoryDetailsAsync(config.RepositoryDetails);
+    var validateConfig = await validateRepositoryDetailsService.ValidateRepositoryDetailsAsync(config.RepositoryDetails, names);
 
     // Fetch the latest changes for the specified branches/tags
     // TODO:
@@ -34,6 +38,5 @@ public class DelegatorService : IDelegatorService
 
     // Save the cleaned diff to the configured path
     // TODO:
-    return Task.CompletedTask;
   }
 }

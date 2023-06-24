@@ -1,4 +1,4 @@
-﻿namespace Models.Interfaces.Services.Delegator;
+﻿namespace Models.Interfaces.Services.DelegatorService;
 
 /// <summary>
 /// A service that calls the relevant services to generate and format the git diffs for the configured repos

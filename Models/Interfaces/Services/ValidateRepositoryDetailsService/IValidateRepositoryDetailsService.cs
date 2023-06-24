@@ -1,7 +1,7 @@
 ﻿using Models.Interfaces.Config;
 using Models.Models.Config;
 
-namespace Models.Interfaces.Services.ValidateRepositoryDetails;
+namespace Models.Interfaces.Services.ValidateRepositoryDetailsService;
 
 /// <summary>
 /// Runs various validation rules against each of the configured repositories to ensure git commands can be run successfully

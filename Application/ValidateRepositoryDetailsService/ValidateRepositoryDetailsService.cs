@@ -1,7 +1,7 @@
 ﻿using System.Text.RegularExpressions;
 using Models.Interfaces.Config;
 using Models.Interfaces.Services.GitCommandRunnerService;
-using Models.Interfaces.Services.ValidateRepositoryDetails;
+using Models.Interfaces.Services.ValidateRepositoryDetailsService;
 using Models.Models.Config;
 
 namespace Application.ValidateRepositoryDetailsService;

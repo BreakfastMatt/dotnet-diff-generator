@@ -5,11 +5,11 @@ using Application.ValidateRepositoryDetailsService;
 using Domain.JsonSerialiser;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Models.Interfaces.Services.Delegator;
+using Models.Interfaces.Services.DelegatorService;
 using Models.Interfaces.Services.GitCommandRunnerService;
 using Models.Interfaces.Services.JsonSerialiser;
-using Models.Interfaces.Services.ReadFromConfig;
-using Models.Interfaces.Services.ValidateRepositoryDetails;
+using Models.Interfaces.Services.ReadFromConfigService;
+using Models.Interfaces.Services.ValidateRepositoryDetailsService;
 
 namespace ConsoleApp;
 
