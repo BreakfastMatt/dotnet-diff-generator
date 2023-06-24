@@ -14,20 +14,20 @@ public class ValidateRepositoryDetailsService : IValidateRepositoryDetailsServic
     this.gitCommandRunnerService = gitCommandRunnerService;
   }
 
-  public Task<bool> ValidateRepositoryDetailsAsync(List<RepositoryDetails> repoDetailsList, IEnumerable<string> names)
+  public async Task<bool> ValidateRepositoryDetailsAsync(List<RepositoryDetails> repoDetailsList, IEnumerable<string> names)
   {
     // Validate the various details of the repository
-    // TODO: update this to run tasks asynchronously1
+    // TODO: update this to run tasks asynchronously
     var isValid = true;
-    repoDetailsList.ForEach(async repoDetails =>
+    foreach (var repoDetails in repoDetailsList)
     {
       gitCommandRunnerService.SetGitRepoDetail(repoDetails);
       var repoExists = await ValidateRepoExistsAsync(repoDetails);
       var repoAccess = repoExists && await ValidateRepoAccessAsync(repoDetails);
       var branchExists = repoAccess && await ValidateBranchExistenceAsync(repoDetails, names);
-      isValid = false;
-    });
-    return Task.FromResult(isValid);
+      isValid = isValid ? (repoExists && repoAccess && branchExists) : isValid;
+    }
+    return isValid;
   }
 
   public Task<bool> ValidateRepoExistsAsync(IRepositoryDetails repoDetails)
@@ -39,7 +39,7 @@ public class ValidateRepositoryDetailsService : IValidateRepositoryDetailsServic
     // Deal with scenario where there path doesn't exist
     if (repoExists == false)
     {
-      var response = $"{repoDetails.Name} does not exist at: {repoPath}";
+      var response = $"* {repoDetails.Name} does not exist at: {repoPath}";
       Console.WriteLine(response);
     }
     return Task.FromResult(repoExists);
@@ -55,7 +55,7 @@ public class ValidateRepositoryDetailsService : IValidateRepositoryDetailsServic
     var hasRepoAccess = string.IsNullOrEmpty(remoteBranches) == false;
     if (hasRepoAccess == false)
     {
-      var response = $"You do not have access to the {repoDetails.Name} repository";
+      var response = $"* You do not have access to the {repoDetails.Name} repository";
       Console.WriteLine(response);
     }
     return hasRepoAccess;
@@ -77,7 +77,7 @@ public class ValidateRepositoryDetailsService : IValidateRepositoryDetailsServic
       var existsOnRemote = (remoteBranches?.Contains(name) ?? false) || (remoteTags?.Contains(name) ?? false);
       if (existsOnRemote == false)
       {
-        var response = $"The reference {name} does not exist on the {repoDetails.Name} repository.";
+        var response = $"* The reference {name} does not exist on the {repoDetails.Name} repository.";
         Console.WriteLine(response);
         isValid = false;
       }
