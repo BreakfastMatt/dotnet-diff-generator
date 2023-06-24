@@ -3,7 +3,7 @@
 namespace Models.Interfaces.Services.GitCommandRunnerService;
 
 /// <summary>
-/// A service to execute various git commands
+/// A service to execute various git commands asynchronously
 /// </summary>
 public interface IGitCommandRunnerService
 {
@@ -19,20 +19,20 @@ public interface IGitCommandRunnerService
   /// </summary>
   /// <param name="gitCommand">The actual git command to be run</param>
   /// <returns>The output of the provided git command</returns>
-  string? ExecuteGitCommand(string gitCommand);
+  Task<string?> ExecuteGitCommandAsync(string gitCommand);
 
   /// <summary>
   /// Checks if there are any outstanding changes on the specified repository
   /// </summary>
   /// <returns>True if there are outstanding changes in your working tree, otherwise false</returns>
-  bool CheckWorkingTreeForOutstandingChanges();
+  Task<bool> CheckWorkingTreeForOutstandingChangesAsync();
 
   /// <summary>
   /// Runs the 'git stash save "diff_generator" --include-untracked' command against the specified repo.
   /// This will stash any outstanding changes currently in the working tree
   /// </summary>
   /// <returns>The output of the 'git stash' command</returns>
-  string? GitStashSave();
+  Task<string?> GitStashSaveAsync();
 
   /// <summary>
   /// Runs the 'git pop "<paramref name="stashName"/>"' command against the specified repo.
@@ -40,7 +40,7 @@ public interface IGitCommandRunnerService
   /// </summary>
   /// <param name="stashName">Name of the stash to pop</param>
   /// <returns>The output of the 'git pop' command</returns>
-  string? GitStashPop(string stashName);
+  Task<string?> GitStashPopAsync(string stashName);
 
   /// <summary>
   /// Or Runs the the 'git fetch origin <paramref name="name"/>' command.
@@ -48,7 +48,7 @@ public interface IGitCommandRunnerService
   /// </summary>
   /// <param name="name">The name of the branch or tag</param>
   /// <returns>The output of the 'git fetch' command</returns>
-  string? GitFetch(string name);
+  Task<string?> GitFetchAsync(string name);
 
   /// <summary>
   /// Runs the 'git checkout <paramref name="name"/>' command against the specified repo.
@@ -56,7 +56,7 @@ public interface IGitCommandRunnerService
   /// </summary>
   /// <param name="name">The name of the branch or tag</param>
   /// <returns>The output of the 'git checkout' command</returns>
-  string? GitCheckout(string name);
+  Task<string?> GitCheckout(string name);
 
   /// <summary>
   /// Runs the 'git pull origin <paramref name="name"/>' command.
@@ -64,7 +64,7 @@ public interface IGitCommandRunnerService
   /// </summary>
   /// <param name="name">The name of the branch or tag</param>
   /// <returns>The output of the 'git pull' command</returns>
-  string? GitPull(string name);
+  Task<string?> GitPullAsync(string name);
 
   /// <summary>
   /// Runs the 'git log <paramref name="from"/>..<paramref name = "to" /> --pretty=format:"%an=====%s --no-merges" command.

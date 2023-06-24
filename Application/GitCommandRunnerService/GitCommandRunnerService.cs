@@ -21,10 +21,10 @@ public class GitCommandRunnerService : IGitCommandRunnerService
     this.remote = remote;
   }
 
-  public bool CheckWorkingTreeForOutstandingChanges()
+  public async Task<bool> CheckWorkingTreeForOutstandingChangesAsync()
   {
     // Execute the 'git status' command
-    var gitStatus = ExecuteGitCommand("status");
+    var gitStatus = await ExecuteGitCommandAsync("status");
     if (string.IsNullOrEmpty(gitStatus))
     {
       return false;
@@ -37,18 +37,18 @@ public class GitCommandRunnerService : IGitCommandRunnerService
     return hasUncommittedChanges || hasUnstagedChanges || hasUntrackedFiles;
   }
 
-  public string? GitStashSave()
+  public async Task<string?> GitStashSaveAsync()
   {
     // Execute the 'git stash save stashName' command
     var gitStashCommand = $"stash save \"{GlobalConstants.gitTempStashName}\"";
-    var stashSaveOutput = ExecuteGitCommand(gitStashCommand);
+    var stashSaveOutput = await ExecuteGitCommandAsync(gitStashCommand);
     return stashSaveOutput;
   }
 
-  public string? GitStashPop(string stashName = GlobalConstants.gitTempStashName)
+  public async Task<string?> GitStashPopAsync(string stashName = GlobalConstants.gitTempStashName)
   {
     // Execute the 'git stash list' command & extract the stash index using a Regex
-    var stashListOutput = ExecuteGitCommand("stash list");
+    var stashListOutput = await ExecuteGitCommandAsync("stash list");
     var stashDetails = stashListOutput?.Split('\n')?.FirstOrDefault(stashDetail => stashDetail.Contains(stashName)) ?? string.Empty;
     var regexMatch = Regex.Matches(stashDetails, @"stash@{(\d+)}").FirstOrDefault();
     if (regexMatch == null || string.IsNullOrEmpty(regexMatch.Value))
@@ -58,31 +58,31 @@ public class GitCommandRunnerService : IGitCommandRunnerService
 
     // Execute the 'git stash pop <regexMatch.Value> command
     var gitStashCommand = $"stash pop \"{regexMatch.Value}\"";
-    var stashPopOutput = ExecuteGitCommand(gitStashCommand);
+    var stashPopOutput = await ExecuteGitCommandAsync(gitStashCommand);
     return stashPopOutput;
   }
 
-  public string? GitFetch(string name)
+  public async Task<string?> GitFetchAsync(string name)
   {
     // Execute the 'git fetch <remote> <name>' command
     var gitFetchCommand = $"fetch {this.remote} {name}";
-    var fetchOutput = ExecuteGitCommand(gitFetchCommand);
+    var fetchOutput = await ExecuteGitCommandAsync(gitFetchCommand);
     return fetchOutput;
   }
 
-  public string? GitCheckout(string name)
+  public async Task<string?> GitCheckout(string name)
   {
     // Executes the 'git checkout <name>' command
     var gitCheckoutCommand = $"checkout {name}";
-    var checkoutOutput = ExecuteGitCommand(gitCheckoutCommand);
+    var checkoutOutput = await ExecuteGitCommandAsync(gitCheckoutCommand);
     return checkoutOutput;
   }
 
-  public string? GitPull(string name)
+  public async Task<string?> GitPullAsync(string name)
   {
     // Execute the 'git pull <remote> <name>' command
     var gitPullCommand = $"pull {this.remote} {name}";
-    var pullOutput = ExecuteGitCommand(gitPullCommand);
+    var pullOutput = await ExecuteGitCommandAsync(gitPullCommand);
     return pullOutput;
   }
 
@@ -94,40 +94,6 @@ public class GitCommandRunnerService : IGitCommandRunnerService
     var gitLogCommand = $"log {fromDiff}..{toDiff} --pretty=format:\"%an{GlobalConstants.gitLogDelimiter}%s\" --no-merges";
     var logOutput = await ExecuteGitCommandAsync(gitLogCommand);
     return logOutput;
-  }
-
-  public string? ExecuteGitCommand(string gitCommand)
-  {
-    // Configures the ProcessStartInfo needed to execute the provided git command
-    var processStartInfo = new ProcessStartInfo
-    {
-      // The specific git command to run
-      FileName = "git",
-      Arguments = gitCommand,
-
-      // The Repository To run against
-      WorkingDirectory = repositoryDetail.Path,
-
-      // Terminal Details
-      CreateNoWindow = true,
-      UseShellExecute = false,
-      RedirectStandardOutput = true,
-      RedirectStandardError = true
-    };
-
-    // Execute the git command using the ProcessStartInfo
-    using var gitProcess = Process.Start(processStartInfo);
-    if (gitProcess == null)
-    {
-      return null;
-    }
-
-    gitProcess.WaitForExit();
-
-    // Check if there was a StandardOutput or StandardError result
-    string error = gitProcess.StandardError.ReadToEnd();
-    string output = gitProcess.StandardOutput.ReadToEnd();
-    return string.IsNullOrEmpty(output) ? error : output;
   }
 
   public async Task<string?> ExecuteGitCommandAsync(string gitCommand)
@@ -184,17 +150,15 @@ public class GitCommandRunnerService : IGitCommandRunnerService
     gitProcess.Start();
     gitProcess.BeginOutputReadLine();
     gitProcess.BeginErrorReadLine();
-
-    // Wait for the process to complete
-    await gitProcess.WaitForExitAsync().ConfigureAwait(false);
+    await gitProcess.WaitForExitAsync();
 
     // Set the completion result for standard output and standard error
     standardOutputTaskCompletionSource.SetResult(standardOutputStringBuilder.ToString());
     standardErrorTaskCompletionSource.SetResult(standardErrorStringBuilder.ToString());
 
     // Get the final standard output and standard error values
-    var standardOutput = await standardOutputTaskCompletionSource.Task.ConfigureAwait(false);
-    var standardError = await standardErrorTaskCompletionSource.Task.ConfigureAwait(false);
+    var standardOutput = await standardOutputTaskCompletionSource.Task;
+    var standardError = await standardErrorTaskCompletionSource.Task;
 
     // Return the appropriate output based on whether standard output is empty
     return string.IsNullOrEmpty(standardOutput) ? standardError : standardOutput;

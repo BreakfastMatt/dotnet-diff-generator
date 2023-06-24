@@ -20,6 +20,9 @@ public class Program
   /// </summary>
   public static async Task Main(string[] args)
   {
+    // Set the synchronization context to null to disable context capturing
+    SynchronizationContext.SetSynchronizationContext(null);
+
     // Create DI Container
     using var host = Host.CreateDefaultBuilder(args)
       .ConfigureServices(services =>
