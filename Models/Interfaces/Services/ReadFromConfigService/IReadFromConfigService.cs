@@ -1,6 +1,6 @@
-﻿using Models.Models.Config;
+﻿using Models.Interfaces.Config;
 
-namespace Models.Interfaces.Services.ReadFromConfig;
+namespace Models.Interfaces.Services.ReadFromConfigService;
 
 /// <summary>
 /// A service to read in the config.json file and extract the repository information

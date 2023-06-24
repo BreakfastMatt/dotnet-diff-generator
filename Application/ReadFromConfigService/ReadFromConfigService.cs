@@ -1,11 +1,10 @@
 ﻿using Models.Interfaces.Config;
 using Models.Interfaces.Services.JsonSerialiser;
-using Models.Interfaces.Services.ReadFromConfig;
+using Models.Interfaces.Services.ReadFromConfigService;
 using Models.Models.Config;
 
-namespace Application.ReadFromConfig;
+namespace Application.ReadFromConfigService;
 
-/// <inheritdoc/>
 public class ReadFromConfigService : IReadFromConfigService
 {
   private readonly IJsonSerialiser jsonSerialiser;
@@ -14,7 +13,6 @@ public class ReadFromConfigService : IReadFromConfigService
     this.jsonSerialiser = jsonSerialiser;
   }
 
-  /// <inheritdoc/>
   public IConfig ReadFromConfig()
   {
     // Read in the contents from the config.json file

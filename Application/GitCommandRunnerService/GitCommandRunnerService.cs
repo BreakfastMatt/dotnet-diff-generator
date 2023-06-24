@@ -89,9 +89,9 @@ public class GitCommandRunnerService : IGitCommandRunnerService
   public async Task<string?> GitLogAsync(string from, string to)
   {
     // Executes the 'git log' command to pull the diff for the repository
-    var fromDiff = Regex.Match(from, @"^\d{1,2}\.\d{1,2}\.\d{1,2}(\.\d{1,2})?$").Success ? $"'{from}'" : $"{this.remote}/{from}";
-    var toDiff = Regex.Match(to, @"^\d{1,2}\.\d{1,2}\.\d{1,2}(\.\d{1,2})?$").Success ? $"'{to}'" : $"{this.remote}/{to}";
-    var gitLogCommand = $"log {fromDiff}..{toDiff} --pretty=format:\"%an{GlobalConstants.gitLogDelimiter}%s\" --no-merges";
+    var fromDiff = Regex.Match(from, @"^\d{1,2}\.\d{1,2}\.\d{1,2}(\.\d{1,2})?$").Success ? $"{from}" : $"{this.remote}/{from}";
+    var toDiff = Regex.Match(to, @"^\d{1,2}\.\d{1,2}\.\d{1,2}(\.\d{1,2})?$").Success ? $"{to}" : $"{this.remote}/{to}";
+    var gitLogCommand = $"log {fromDiff}..{toDiff} --no-merges --pretty=format:\"%an{GlobalConstants.gitLogDelimiter}%s\"";
     var logOutput = await ExecuteGitCommandAsync(gitLogCommand);
     return logOutput;
   }
