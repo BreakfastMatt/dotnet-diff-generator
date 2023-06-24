@@ -1,5 +1,6 @@
 ﻿using Application.DelegatorService;
 using Application.GitCommandRunnerService;
+using Application.PromptUserInputService;
 using Application.ReadFromConfigService;
 using Application.ValidateRepositoryDetailsService;
 using Domain.JsonSerialiser;
@@ -8,6 +9,7 @@ using Microsoft.Extensions.Hosting;
 using Models.Interfaces.Services.DelegatorService;
 using Models.Interfaces.Services.GitCommandRunnerService;
 using Models.Interfaces.Services.JsonSerialiser;
+using Models.Interfaces.Services.PromptUserInputService;
 using Models.Interfaces.Services.ReadFromConfigService;
 using Models.Interfaces.Services.ValidateRepositoryDetailsService;
 
@@ -27,21 +29,20 @@ public class Program
     using var host = Host.CreateDefaultBuilder(args)
       .ConfigureServices(services =>
       {
-        // Register Services
+        // Register Domain Services
         services.AddSingleton<IJsonSerialiser, JsonSerialiser>();
+
+        // Register Application Services
+        services.AddTransient<IGitCommandRunnerService, GitCommandRunnerService>();
         services.AddScoped<IDelegatorService, DelegatorService>();
-        services.AddScoped<IGitCommandRunnerService, GitCommandRunnerService>();
         services.AddScoped<IReadFromConfigService, ReadFromConfigService>();
+        services.AddScoped<IPromptUserInputService, PromptUserInputService>();
         services.AddScoped<IValidateRepositoryDetailsService, ValidateRepositoryDetailsService>();
       })
       .Build();
 
     // Call the delegator service
     var service = host.Services.GetRequiredService<IDelegatorService>();
-    await service.GetResponseAsync();
-
-    // Prevent automatic console closure
-    Console.WriteLine("Press any key to exit...");
-    Console.ReadKey();
+    await service.DelegateAsync();
   }
 }
