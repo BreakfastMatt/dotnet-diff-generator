@@ -6,7 +6,6 @@ using Models.Models.Config;
 
 namespace Application.ValidateRepositoryDetailsService;
 
-// TODO: implement this service :)
 public class ValidateRepositoryDetailsService : IValidateRepositoryDetailsService
 {
   private readonly IGitCommandRunnerService gitCommandRunnerService;
@@ -15,18 +14,20 @@ public class ValidateRepositoryDetailsService : IValidateRepositoryDetailsServic
     this.gitCommandRunnerService = gitCommandRunnerService;
   }
 
-  public async Task<bool> ValidateRepositoryDetailsAsync(List<RepositoryDetails> repoDetailsList)
+  public Task<bool> ValidateRepositoryDetailsAsync(List<RepositoryDetails> repoDetailsList, IEnumerable<string> names)
   {
-    //repoDetailsList.ForEach(repoDetails =>
-    //{
-    //  gitCommandRunnerService.SetGitRepoDetail(repoDetails);
-    //});
-
-    // Validate each of the repositories
-    // - ValidateRepoExistsAsync
-    // - ValidateRepoAccessAsync
-    // - ValidateBranchExistenceAsync
-    throw new NotImplementedException();
+    // Validate the various details of the repository
+    // TODO: update this to run tasks asynchronously1
+    var isValid = true;
+    repoDetailsList.ForEach(async repoDetails =>
+    {
+      gitCommandRunnerService.SetGitRepoDetail(repoDetails);
+      var repoExists = await ValidateRepoExistsAsync(repoDetails);
+      var repoAccess = repoExists && await ValidateRepoAccessAsync(repoDetails);
+      var branchExists = repoAccess && await ValidateBranchExistenceAsync(repoDetails, names);
+      isValid = false;
+    });
+    return Task.FromResult(isValid);
   }
 
   public Task<bool> ValidateRepoExistsAsync(IRepositoryDetails repoDetails)
@@ -65,9 +66,7 @@ public class ValidateRepositoryDetailsService : IValidateRepositoryDetailsServic
     // Fetch list of tags and branches on the remote
     var gitListRemoteBranchesCommand = "ls-remote";
     var listRemoteOutput = await gitCommandRunnerService.ExecuteGitCommandAsync(gitListRemoteBranchesCommand) ?? string.Empty;
-    //var remoteBranches = Regex.Matches(listRemoteOutput, @"refs/heads/(.+)");
     var remoteBranches = Regex.Matches(listRemoteOutput, @"refs/heads/(.+)").Select(branch => branch.Groups?[1]?.Value?.Trim()).ToList();
-    //var remoteTags = Regex.Matches(listRemoteOutput, @"refs/tags/(.+)");
     var remoteTags = Regex.Matches(listRemoteOutput, @"refs/tags/(.+)").Select(branch => branch.Groups?[1]?.Value?.Trim()).ToList();
 
     // Checks if the specified branches or tags exist
