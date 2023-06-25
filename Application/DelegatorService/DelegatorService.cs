@@ -73,7 +73,7 @@ public class DelegatorService : IDelegatorService
       }
 
       // Prompt the user to exit
-      Console.WriteLine("\nPress any key to exit...");
+      Console.WriteLine("Press any key to exit...");
       Console.ReadKey();
       break;
     }
@@ -105,6 +105,7 @@ public class DelegatorService : IDelegatorService
 
     // Validate the configured repos
     Console.WriteLine("Validating repositories...");
+    Console.Out.Flush();
     var validateConfig = await validateRepositoryDetailsService.ValidateRepositoryDetailsAsync(config.RepositoryDetails, names);
 
     // Check if section ran successfully
@@ -125,9 +126,14 @@ public class DelegatorService : IDelegatorService
     // Fetch latest changes for repositories
     var fetchLatestChanges = false;
     Console.WriteLine("Fetching latest changes for repositories...");
-    foreach (var repoDetail in config.RepositoryDetails)
+    Console.Out.Flush();
+    foreach (var repoDetails in config.RepositoryDetails)
     {
-      gitCommandRunnerService.SetGitRepoDetail(repoDetail);
+      // Sets the main branch name for the specified repository
+      names = names.Select(name => (name.ToUpper().Equals("DEV") || name.ToUpper().Equals("MAIN")) ? repoDetails.MainBranchName : name).ToList();
+
+      // Fetches the latest for the provided branches/tags
+      gitCommandRunnerService.SetGitRepoDetail(repoDetails);
       var fetchedFrom = gitCommandRunnerService.GitFetchAsync(names.FirstOrDefault());
       var fetchedTo = gitCommandRunnerService.GitFetchAsync(names.LastOrDefault());
       await Task.WhenAll(fetchedFrom, fetchedTo);

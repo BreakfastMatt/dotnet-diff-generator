@@ -21,10 +21,17 @@ public class DiffGenerationService : IDiffGenerationService
   public async Task<bool> GenerateRepositoryDiffsAsync(IConfig config, string build, string fromReference, string toReference)
   {
     // Generate & clean diffs for repository
+    Console.WriteLine("Generating diffs for repositories...");
+    Console.Out.Flush();
     var diffList = new List<Dictionary<string, List<string>>>();
-    foreach (var repository in config.RepositoryDetails)
+    foreach (var repoDetails in config.RepositoryDetails)
     {
-      var rawDiff = await GenerateRawDiffForRepositoryAsync(repository, fromReference, toReference);
+      // Sets the main branch name for the specified repository
+      var configuredFromReference = (fromReference.ToUpper().Equals("DEV") || fromReference.ToUpper().Equals("MAIN")) ? repoDetails.MainBranchName : fromReference;
+      var configuredToReference = (toReference.ToUpper().Equals("DEV") || toReference.ToUpper().Equals("MAIN")) ? repoDetails.MainBranchName : toReference;
+
+      // Generates & extract diff references
+      var rawDiff = await GenerateRawDiffForRepositoryAsync(repoDetails, configuredFromReference, configuredToReference);
       var diffReferences = ExtractCommitReferences(rawDiff);
       diffList.Add(diffReferences);
     }
@@ -40,13 +47,9 @@ public class DiffGenerationService : IDiffGenerationService
 
   public async Task<List<Commit>> GenerateRawDiffForRepositoryAsync(IRepositoryDetails repoDetail, string fromReference, string toReference)
   {
-    // Sets the main branch name for the specified repository
-    var configuredFromReference = (fromReference.ToUpper().Equals("DEV") || fromReference.ToUpper().Equals("MAIN")) ? repoDetail.MainBranchName : fromReference;
-    var configuredToReference = (toReference.ToUpper().Equals("DEV") || toReference.ToUpper().Equals("MAIN")) ? repoDetail.MainBranchName : toReference;
-
     // Generates the raw diffs for the repository
     gitCommandRunnerService.SetGitRepoDetail(repoDetail);
-    var rawDiffs = await gitCommandRunnerService.GitLogAsync(configuredFromReference, configuredToReference);
+    var rawDiffs = await gitCommandRunnerService.GitLogAsync(fromReference, toReference);
     var commitDetails = rawDiffs
       ?.Split(GlobalConstants.gitLogDiffSeparator)
       ?.Select(rawDiffLine =>
@@ -289,7 +292,8 @@ public class DiffGenerationService : IDiffGenerationService
       // Save the file
       var textFilePath = $"{buildFolderPath}\\cleaned_diff.txt";
       File.WriteAllText(textFilePath, diffs);
-      Console.WriteLine("File saved successfully.");
+      Console.WriteLine($"\nFile saved successfully to: {textFilePath}");
+      Console.Out.Flush();
       return true;
     }
     catch (Exception ex)

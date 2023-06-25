@@ -17,10 +17,13 @@ public class ValidateRepositoryDetailsService : IValidateRepositoryDetailsServic
   public async Task<bool> ValidateRepositoryDetailsAsync(List<RepositoryDetails> repoDetailsList, IEnumerable<string> names)
   {
     // Validate the various details of the repository
-    // TODO: update this to run tasks asynchronously
     var isValid = true;
     foreach (var repoDetails in repoDetailsList)
     {
+      // Sets the main branch name for the specified repository
+      names = names.Select(name => (name.ToUpper().Equals("DEV") || name.ToUpper().Equals("MAIN")) ? repoDetails.MainBranchName : name).ToList();
+
+      // Checks 
       gitCommandRunnerService.SetGitRepoDetail(repoDetails);
       var repoExists = await ValidateRepoExistsAsync(repoDetails);
       var repoAccess = repoExists && await ValidateRepoAccessAsync(repoDetails);
