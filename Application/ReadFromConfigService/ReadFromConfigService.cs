@@ -16,7 +16,7 @@ public class ReadFromConfigService : IReadFromConfigService
   public IConfig ReadFromConfig()
   {
     // Read in the contents from the config.json file
-    var basePath = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.Parent.FullName; // TODO: need a better way to do this
+    string basePath = Path.Combine(AppContext.BaseDirectory);
     var configFilePath = Path.Combine(basePath, "config.json");
     var configJson = File.ReadAllText(configFilePath) ?? string.Empty;
 

@@ -47,13 +47,14 @@ public class DelegatorService : IDelegatorService
     var @continue = true;
     var previousNames = new List<string>();
     var config = readFromConfigService.ReadFromConfig();
-    var build = promptUserInputService.PromptBuildName();
+    var build = string.Empty;
 
     while (@continue)
     {
       // Calls the relevant services required to generate the diffs
       var branchTagNames = promptUserInputService.PromptBranchOrTagNames();
       var names = new List<string> { branchTagNames.Item1, branchTagNames.Item2 };
+      build = string.IsNullOrEmpty(build) ? promptUserInputService.PromptBuildName() : build;
       ResetShortCircuitingIndicators(names, previousNames);
       var response = await CallServicesAsync(config, names, build);
 
