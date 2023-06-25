@@ -63,41 +63,62 @@ public class DiffGenerationServiceTests
     // Arrange
     var gitCommandRunnerService = new GitCommandRunnerService();
     var diffGenerationService = new DiffGenerationService(gitCommandRunnerService);
-    var diffsRepo1 = new Dictionary<string, List<string>>()
+    var diffsRepo1 = new Dictionary<string, List<string>>
     {
-      {"CommitsWithoutReferences", new List<string>{"LOCAL" } },
-      {"FEAT-1003", new List<string>{ "DEV-3418" } },
-      {"FEAT-779", new List<string>{ "DEV-3632", "DEFECT-3614", "DEV-3632" } },
-      {"FEAT-702", new List<string>{ "DEFECT-3629", "DEV-3681", "DEFECT-3673" } },
-      {"CHANGES-937", new List<string>{ "DEV-3722" } },
-      {"FEAT-7798", new List<string>{ "DEFECT-3632" } },
-      {"DEFECT-3632", new List<string>() }, // Duplicate entry (exists linked to a feature, so should be removed)
-      {"FEAT-997", new List<string>{ "DEFECT-3637", "DEFECT-3644", "DEFECT-3622" }},
-      {"FEAT-692", new List<string>{ "DEV-3191", "DEFECT-3616" } },
-      {"DEFECT-3636", new List<string>()},
-      {"GIP-12746",new List<string>()},
-      {"DEFECT-3630", new List<string>() },
-      {"DEFECT-3672", new List<string>()},
-      {"DEFECT-3646", new List<string>()},
-      {"DEFECT-3675", new List<string>() },
-      {"DEV-3418", new List<string>() }, // Duplicate entry (exists linked to a feature, so should be removed)
-      {"GIP-12456", new List<string>() },
-      {"DEFECT-3676", new List<string>() },
-      {"DEFECT-3715", new List<string>() },
-      {"DEFECT-3547", new List<string>() }
+      { "Key1", new List<string> { "Ref1", "Ref2" } },
+      { "Key2", new List<string> { "Ref3", "Ref4" } },
+      { "Key3", new List<string> { "Ref5" } }
     };
-    var diffsRepo2 = new Dictionary<string, List<string>>()
+    var diffsRepo2 = new Dictionary<string, List<string>>
     {
-      {"CommitsWithoutReferences", new List<string>{"Some other random commit" } }, // Combine with the above entry
-      {"FEAT-1003", new List<string>{ "DEV-3418", "DEV-9999" } }, // Add unique tickets to the existing entry
-      {"FEAT-806", new List<string>{ "DEV-3190" } } // New entry, should be added
+      { "Key1", new List<string> { "Ref1", "Ref6" } }, // Only Ref6 should be added
+      { "Key2", new List<string> { "Ref3", "Ref4", "Ref7" } }, // Only Ref7 should be added
+      { "Key3", new List<string>{ "Ref9" } }, // Ref9 should be added
+      { "Key4", new List<string> { "Ref8" } }, // New entry shuld be added
+      { "Ref1", new List<string>() }, // Entry should be removed (exists at list-level)
     };
-    var diffList = new List<Dictionary<string, List<string>>> { diffsRepo1, diffsRepo2 };
 
     // Act
-    var groupedDiffs = diffGenerationService.GroupRawDiffs(diffList);
+    var groupedDiffs = diffGenerationService.GroupRawDiffs(new List<Dictionary<string, List<string>>> { diffsRepo1, diffsRepo2 });
 
     // Assert
-    Assert.Fail(); // TODO: temporary for now.
+    var expected = new Dictionary<string, List<string>>
+    {
+      { "Key1", new List<string> { "Ref1", "Ref2", "Ref6" } },
+      { "Key2", new List<string> { "Ref3", "Ref4", "Ref7" } },
+      { "Key3", new List<string> { "Ref9" } },
+      { "Key4", new List<string> { "Ref8" } },
+    };
+    Assert.That(groupedDiffs, Is.EquivalentTo(expected));
   }
 }
+
+//var diffsRepo1 = new Dictionary<string, List<string>>()
+//{
+//  {"CommitsWithoutReferences", new List<string>{"LOCAL" } },
+//  {"FEAT-1003", new List<string>{ "DEV-3418" } },
+//  {"FEAT-779", new List<string>{ "DEV-3632", "DEFECT-3614", "DEV-3632" } },
+//  {"FEAT-702", new List<string>{ "DEFECT-3629", "DEV-3681", "DEFECT-3673" } },
+//  {"CHANGES-937", new List<string>{ "DEV-3722" } },
+//  {"FEAT-7798", new List<string>{ "DEFECT-3632" } },
+//  {"DEFECT-3632", new List<string>() }, // Duplicate entry (exists linked to a feature, so should be removed)
+//  {"FEAT-997", new List<string>{ "DEFECT-3637", "DEFECT-3644", "DEFECT-3622" }},
+//  {"FEAT-692", new List<string>{ "DEV-3191", "DEFECT-3616" } },
+//  {"DEFECT-3636", new List<string>()},
+//  {"GIP-12746",new List<string>()},
+//  {"DEFECT-3630", new List<string>() },
+//  {"DEFECT-3672", new List<string>()},
+//  {"DEFECT-3646", new List<string>()},
+//  {"DEFECT-3675", new List<string>() },
+//  {"DEV-3418", new List<string>() }, // Duplicate entry (exists linked to a feature, so should be removed)
+//  {"GIP-12456", new List<string>() },
+//  {"DEFECT-3676", new List<string>() },
+//  {"DEFECT-3715", new List<string>() },
+//  {"DEFECT-3547", new List<string>() }
+//};
+//var diffsRepo2 = new Dictionary<string, List<string>>()
+//{
+//  {"CommitsWithoutReferences", new List<string>{"Some other random commit" } }, // Combine with the above entry
+//  {"FEAT-1003", new List<string>{ "DEV-3418", "DEV-9999" } }, // Add unique tickets to the existing entry
+//  {"FEAT-806", new List<string>{ "DEV-3190" } } // New entry, should be added
+//};
