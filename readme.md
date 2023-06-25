@@ -28,13 +28,16 @@ Example **`config.json`**:
 }
 ```
 
-## Upcoming features
+## Build the Application
 
-1. Prompt user for a from and to branch/tag
-2. Utilise the config file details to fetch the latest for the *'from'* & *'to'* branches
-3. Add error checking for project repos that don't have the branch or tag
-4. Generate diffs for each project
-5. Add error checking for the diff generation
-7. Format the diffs (Centralise this logic somewhere so it is easy to alter)
-8. Group the commits (Centralise the grouping logic so it is easy to alter)
-9. Combine all the diffs into a single file & output to the "OutputPath" specified in the config.json file
+In visual studio, open the terminal and run this command:
+
+```powershell
+dotnet publish -c Release -r win-x64
+```
+
+if the above command succeeded then open a terminal in the Git-Diff-Generator\Console folder and run this command:
+
+```powershell
+dotnet publish ConsoleApp.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true --output C:\Users\MLewis\Desktop\files
+```
