@@ -7,6 +7,7 @@ using Models.Models.Commit;
 
 namespace Application.DiffGenerationService;
 
+// TODO: note currently the logic here is a bit messy and not written in the nicest way. this will be updated :)
 public class DiffGenerationService : IDiffGenerationService
 {
   // Inject relevant services
@@ -158,7 +159,49 @@ public class DiffGenerationService : IDiffGenerationService
 
   public Dictionary<string, List<string>> GroupRawDiffs(List<Dictionary<string, List<string>>> diffsList)
   {
-    throw new NotImplementedException();
+    // Groups and clean the raw diffs
+    var combinedDictionary = new Dictionary<string, List<string>>();
+    foreach (var dictionary in diffsList)
+    {
+      // First iteration
+      if (combinedDictionary.Count == 0)
+      {
+        // Instantiate the combinedDictionary
+        combinedDictionary = dictionary;
+        continue;
+      }
+
+      // Compare the dictionaries
+      foreach (var keyValuePair in dictionary)
+      {
+        // Add the entry to the combinedDictionary if it isn't present yet
+        var entryExistsInCombinedDictionary = combinedDictionary.ContainsKey(keyValuePair.Key);
+        if (entryExistsInCombinedDictionary == false)
+        {
+          // Entry doesn't exist in the combinedDictionary, so add it
+          combinedDictionary.Add(keyValuePair.Key, keyValuePair.Value);
+          continue;
+        }
+
+        // Entry does exist, so check the underlying values
+        var valueRetrieval = combinedDictionary.TryGetValue(keyValuePair.Key, out var currentListValues);
+        var newListValues = new List<string>(currentListValues);
+        newListValues.AddRange(keyValuePair.Value);
+        newListValues = newListValues.Distinct().ToList();
+        combinedDictionary[keyValuePair.Key] = newListValues;
+      }
+    }
+
+    // Clear all entries that exist as values
+    foreach (var entryKvp in combinedDictionary)
+    {
+      var keyExistsAtListLevel = combinedDictionary.Any(kvp => kvp.Value.Contains(entryKvp.Key));
+      var entryShouldBeRemoved = keyExistsAtListLevel && entryKvp.Value.Count == 0;
+      if (entryShouldBeRemoved) combinedDictionary.Remove(entryKvp.Key);
+    }
+
+    // The grouped diffs with distinct entries
+    return combinedDictionary;
   }
 
   public string ConvertDiffsToString(Dictionary<string, List<string>> groupedDiffs)

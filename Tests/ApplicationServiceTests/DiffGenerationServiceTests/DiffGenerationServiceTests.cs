@@ -86,7 +86,7 @@ public class DiffGenerationServiceTests
     {
       { "Key1", new List<string> { "Ref1", "Ref2", "Ref6" } },
       { "Key2", new List<string> { "Ref3", "Ref4", "Ref7" } },
-      { "Key3", new List<string> { "Ref9" } },
+      { "Key3", new List<string> { "Ref5", "Ref9" } },
       { "Key4", new List<string> { "Ref8" } },
     };
     Assert.That(groupedDiffs, Is.EquivalentTo(expected));
