@@ -121,7 +121,7 @@ public class DiffGenerationService : IDiffGenerationService
       }
       continue;
     }
-    return commits;
+    return referencesDictionary;
   }
 
   public async Task<bool> GenerateRepositoryDiffsAsync(IRepositoryDetails repoDetail, string build, string fromReference, string toReference)
