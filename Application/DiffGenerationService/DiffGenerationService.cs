@@ -16,6 +16,11 @@ public class DiffGenerationService : IDiffGenerationService
     this.gitCommandRunnerService = gitCommandRunnerService;
   }
 
+  public async Task<bool> GenerateRepositoryDiffsAsync(IConfig config, string build, string fromReference, string toReference)
+  {
+    throw new NotImplementedException();
+  }
+
   public async Task<List<Commit>> GenerateRawDiffForRepositoryAsync(IRepositoryDetails repoDetail, string fromReference, string toReference)
   {
     // Generates the raw diffs for the repository
@@ -136,12 +141,12 @@ public class DiffGenerationService : IDiffGenerationService
     return referencesDictionary;
   }
 
-  public async Task<bool> GenerateRepositoryDiffsAsync(IRepositoryDetails repoDetail, string build, string fromReference, string toReference)
+  public string ConvertDiffsToString(List<Dictionary<string, List<string>>> diffsList)
   {
     throw new NotImplementedException();
   }
 
-  public string GroupDiffsForRepository(List<Commit> commits)
+  public bool SaveDiffsToOutputDirectory(string build, string diffs)
   {
     throw new NotImplementedException();
   }
