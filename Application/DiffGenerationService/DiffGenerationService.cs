@@ -81,7 +81,19 @@ public class DiffGenerationService : IDiffGenerationService
         if (commitIsInList == false) continue;
 
         // Remove the reverted commit references from the dictionary
-        // TODO:
+        if (referencesDictionary.ContainsKey(epicMatch) && referencesDictionary[epicMatch].Count == 0) referencesDictionary.Remove(epicMatch);
+        foreach (var match in matches)
+        {
+          // Remove underlying references
+          foreach (var entry in referencesDictionary)
+          {
+            var entireEntryShouldBeRemoved = entry.Key == match && entry.Value.Contains(match);
+            if (entireEntryShouldBeRemoved) referencesDictionary.Remove(entry.Key);
+            else if (entry.Value.Contains(match)) entry.Value.RemoveAll(dictionaryValue => dictionaryValue?.Equals(match) ?? false);
+          }
+        }
+        if (referencesDictionary.ContainsKey(epicMatch) && referencesDictionary[epicMatch].Count == 0) referencesDictionary.Remove(epicMatch);
+        continue;
       }
 
       // Epic Match
