@@ -289,7 +289,7 @@ public class DiffGenerationService : IDiffGenerationService
       if (!buildFolderExists) Directory.CreateDirectory(path);
 
       // Save the file
-      var textFilePath = $"{path}\\{build}.txt";
+      var textFilePath = $"{path}\\{build}_diffs.txt";
       File.WriteAllText(textFilePath, diffs);
       Console.WriteLine($"\nFile saved successfully to: {textFilePath}");
       Console.Out.Flush();
