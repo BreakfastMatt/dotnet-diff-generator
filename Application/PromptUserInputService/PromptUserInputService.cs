@@ -7,7 +7,6 @@ public class PromptUserInputService : IPromptUserInputService
   public Tuple<string, string> PromptBranchOrTagNames()
   {
     // Prompts the user to enter a 'from' branch or tag
-    Console.Clear();
     var fromReference = string.Empty;
     while (string.IsNullOrEmpty(fromReference))
     {
@@ -24,7 +23,6 @@ public class PromptUserInputService : IPromptUserInputService
     }
 
     // Returns a Tuple containing the 'from' & 'to' values
-    Console.Clear();
     var response = new Tuple<string, string>(fromReference, toReference);
     return response;
   }
@@ -32,7 +30,6 @@ public class PromptUserInputService : IPromptUserInputService
   public string PromptBuildName()
   {
     // Prompts the user to enter a 'build' name
-    //Console.Clear();
     var buildName = string.Empty;
     while (string.IsNullOrEmpty(buildName))
     {

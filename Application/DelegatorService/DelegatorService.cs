@@ -47,6 +47,7 @@ public class DelegatorService : IDelegatorService
     var @continue = true;
     var previousNames = new List<string>();
     var config = readFromConfigService.ReadFromConfig();
+    var build = promptUserInputService.PromptBuildName();
 
     while (@continue)
     {
@@ -54,7 +55,7 @@ public class DelegatorService : IDelegatorService
       var branchTagNames = promptUserInputService.PromptBranchOrTagNames();
       var names = new List<string> { branchTagNames.Item1, branchTagNames.Item2 };
       ResetShortCircuitingIndicators(names, previousNames);
-      var response = await CallServicesAsync(config, names);
+      var response = await CallServicesAsync(config, names, build);
 
       // Prompt the user to restart the process if it failed
       if (response == false)
@@ -77,14 +78,14 @@ public class DelegatorService : IDelegatorService
     }
   }
 
-  public async Task<bool> CallServicesAsync(IConfig config, List<string> names)
+  public async Task<bool> CallServicesAsync(IConfig config, List<string> names, string build)
   {
     // 1) Validate repository details
+    Console.Clear();
     var validationSucceeded = await RunValidationAsync(config, names);
 
     // 2) Fetch the latest changes for the specified branches/tags
     var fetchSucceeded = validationSucceeded && await FetchLatestChangesForRepositoriesAsync(config, names);
-    var build = fetchSucceeded ? promptUserInputService.PromptBuildName() : null;
 
     // 3) Generate the raw diffs for the specified branches/tags
     var diffSucceeded = fetchSucceeded && await diffGenerationService.GenerateRepositoryDiffsAsync(config, build, names.FirstOrDefault(), names.LastOrDefault());
