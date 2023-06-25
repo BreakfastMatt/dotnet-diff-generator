@@ -1,15 +1,21 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <!-- General project details -->
     <OutputType>Exe</OutputType>
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-  </PropertyGroup>
 
-  <!-- Renames the published .exe file -->
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PublishProfile>GenerateDiffs</PublishProfile>
+    <!-- Renames the published .exe file -->
+    <PublishSingleFile>true</PublishSingleFile>
+    <PublishTrimmed>true</PublishTrimmed>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <SelfContained>true</SelfContained>
+    <PublishReadyToRun>false</PublishReadyToRun>
+    <PublishDir>bin\Release\net6.0\win-x64\publish</PublishDir>
+    <AssemblyName>GenerateDiffs</AssemblyName>
+    <OutputFile>GenerateDiffs.exe</OutputFile>
   </PropertyGroup>
 
   <!-- Ensures the config.json file gets redirected on build -->
