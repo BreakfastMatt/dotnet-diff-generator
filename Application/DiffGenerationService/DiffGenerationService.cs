@@ -208,6 +208,7 @@ public class DiffGenerationService : IDiffGenerationService
   public string ConvertDiffsToString(Dictionary<string, List<string>> groupedDiffs)
   {
     // Group the diffs into the order in which they'll appear in the final string
+    var stringbuilder = new StringBuilder();
     var features = groupedDiffs.Where(diff => diff.Key.Contains("FEAT-")).OrderBy(entry => entry.Key).ToDictionary(key => key.Key, value => value.Value);
     var changes = groupedDiffs.Where(diff => diff.Key.Contains("CHANGES-")).OrderBy(entry => entry.Key).ToDictionary(key => key.Key, value => value.Value);
     var defects = groupedDiffs.Where(diff => diff.Key.Contains("DEFECT-")).OrderBy(entry => entry.Key).ToDictionary(key => key.Key, value => value.Value);
@@ -215,14 +216,31 @@ public class DiffGenerationService : IDiffGenerationService
     var actions = groupedDiffs.Where(diff => diff.Key.Contains("ACTION-")).OrderBy(entry => entry.Key).ToDictionary(key => key.Key, value => value.Value);
     var improperCommits = groupedDiffs.Where(diff => diff.Key.Contains("DEV-") || diff.Key.Contains(GlobalConstants.diffCommitWithoutReference)).OrderBy(entry => entry.Key).ToDictionary(key => key.Key, value => value.Value);
 
-    // Build the string
-    var stringbuilder = new StringBuilder();
-    stringbuilder.AppendLine(ConvertDiffSectionToString(features));
-    stringbuilder.AppendLine(ConvertDiffSectionToString(changes));
-    stringbuilder.AppendLine(ConvertDiffSectionToString(defects));
-    stringbuilder.AppendLine(ConvertDiffSectionToString(gips));
-    stringbuilder.AppendLine(ConvertDiffSectionToString(actions));
-    stringbuilder.AppendLine(ConvertDiffSectionToString(improperCommits, true));
+    // Build the feature section
+    var featureSection = ConvertDiffSectionToString(features);
+    if (!string.IsNullOrEmpty(featureSection)) stringbuilder.AppendLine(featureSection);
+
+    // Build the changes section
+    var changesSection = ConvertDiffSectionToString(changes);
+    if (!string.IsNullOrEmpty(changesSection)) stringbuilder.AppendLine(changesSection);
+
+    // Build the defects section
+    var defectSection = ConvertDiffSectionToString(defects);
+    if (!string.IsNullOrEmpty(defectSection)) stringbuilder.AppendLine(defectSection);
+
+    // Build the gip section
+    var gipSection = ConvertDiffSectionToString(gips);
+    if (!string.IsNullOrEmpty(gipSection)) stringbuilder.AppendLine(gipSection);
+
+    // Build the action section
+    var actionsSection = ConvertDiffSectionToString(actions);
+    if (!string.IsNullOrEmpty(actionsSection)) stringbuilder.AppendLine(actionsSection);
+
+    // Build the action section
+    var improperCommitsSection = ConvertDiffSectionToString(improperCommits, true);
+    if (!string.IsNullOrEmpty(improperCommitsSection)) stringbuilder.AppendLine(improperCommitsSection);
+
+    // Builds the string
     var stringDiff = stringbuilder.ToString().Trim();
     return stringDiff;
   }
@@ -249,7 +267,8 @@ public class DiffGenerationService : IDiffGenerationService
     }
 
     // Builds the diffSection to string
-    var diffSectionString = stringbuilder.ToString().TrimEnd();
+    var diffSectionString = stringbuilder.ToString().Trim();
+    if (string.IsNullOrEmpty(diffSectionString)) return string.Empty;
     diffSectionString += "\n";
     return diffSectionString;
   }
