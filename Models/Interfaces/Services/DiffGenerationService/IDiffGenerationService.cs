@@ -12,7 +12,7 @@ public interface IDiffGenerationService // TODO: add comments / finish functiona
 
   Task<List<Commit>> GenerateRawDiffForRepositoryAsync(IRepositoryDetails repoDetail, string fromReference, string toReference);
 
-  List<Commit> ExtractCommitReferences(List<Commit> commits);
+  Dictionary<string, List<string>> ExtractCommitReferences(List<Commit> commits);
 
   string GroupDiffsForRepository(List<Commit> commits);
 }

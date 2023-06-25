@@ -27,10 +27,13 @@ public class DiffGenerationService : IDiffGenerationService
       {
         // Grabs the detail of the commit
         var diffDetail = rawDiffLine?.Split(GlobalConstants.gitLogDelimiter);
+        if (diffDetail == null || diffDetail.Length != 3) return new Commit();
+        var hasDateSpecified = DateTime.TryParse(diffDetail?[2], out var commitDate);
         var commitDetail = new Commit
         {
-          Author = diffDetail?.FirstOrDefault() ?? string.Empty,
-          CommitMessage = diffDetail?.LastOrDefault() ?? string.Empty,
+          Author = diffDetail?[0] ?? string.Empty,
+          CommitMessage = diffDetail?[1] ?? string.Empty,
+          CommitDate = hasDateSpecified ? commitDate : DateTime.MinValue
         };
         return commitDetail;
       })
@@ -38,64 +41,56 @@ public class DiffGenerationService : IDiffGenerationService
     return commitDetails;
   }
 
-  //public List<Commit> ExtractCommitReferences(List<Commit> commits)
-  //{
-  //  // Initialises the epic dictionary
-  //  var epicDictionary = new Dictionary<string, List<string>>();
-  //  epicDictionary.Add(GlobalConstants.diffCommitWithoutReference, new List<string>());
-
-  //  void AddReferencesToDictionary(string epicMatch, MatchCollection referenceMatches, bool standard = true)
-  //  {
-  //    var hasValues = epicDictionary.TryGetValue(epicMatch, out var existingValues);
-  //    var matches = referenceMatches?.Select(match => match.Value)?.Where(match => existingValues?.Contains(match) ?? true)?.ToList() ?? new List<string>();
-  //    if (hasValues) epicDictionary[epicMatch].AddRange(matches);
-  //  };
-
-  //  var mappedCommits = commits
-  //    .Select(commitDetail =>
-  //    {
-  //      // Grabs the epicMatch if present
-  //      var commitMessage = commitDetail.CommitMessage.ToUpper();
-  //      var epicMatch = Regex.Match(commitMessage, @"\b(?:FEAT)-\d+\b")?.Value;
-  //      epicMatch = string.IsNullOrEmpty(epicMatch) ? GlobalConstants.diffEpicNotCaptured : epicMatch;
-  //      epicDictionary.TryAdd(epicMatch, new List<string>());
-  //      var hasEpic = !epicMatch.Equals(GlobalConstants.diffEpicNotCaptured);
-
-  //      // Checks the Standard Matches
-  //      var standardMatches = Regex.Matches(commitMessage, @"\b(?:DEV|DEFECT|CHANGES|GIP|ACTION)-\d+\b");
-  //      AddReferencesToDictionary(epicMatch, standardMatches);
-
-  //      // Checks the Non-standard Matches
-  //      var nonStandardMatches = Regex.Matches(commitMessage, @"(?i)\b(?:feat|dev|defect|changes|gip|action)\d+\b");
-  //      AddReferencesToDictionary(GlobalConstants.diffCommitWithoutReference, nonStandardMatches, false);
-
-  //      // Adds commits that have no references to list
-  //      var hasNoReferences = standardMatches.Count == 0 && nonStandardMatches.Count == 0;
-  //      if (hasNoReferences) epicDictionary[GlobalConstants.diffCommitWithoutReference].Add($"{commitDetail.Author} - {commitMessage}");
-  //      return commitDetail;
-  //    })
-  //    .ToList();
-  //  return mappedCommits;
-  //}
-
-
-  public List<Commit> ExtractCommitReferences(List<Commit> commits)
+  public Dictionary<string, List<string>> ExtractCommitReferences(List<Commit> commits)
   {
-    // TODO: neaten this function uo a bit (has a bit too much spaghet :P)
-    // TODO: add logic to ensure the hyphen is present in the reference (standardise the references) 
-    // TODO: can create a helper functino for this (needs to run for both the standardmatchesresults and epicMatch
-
+    // Setup & Order the commits
     var referencesDictionary = new Dictionary<string, List<string>>();
-    foreach (var commitDetail in commits)
-    {
-      // Epic Match
-      var commitMessage = commitDetail.CommitMessage.ToUpper();
-      var epicMatch = Regex.Match(commitMessage, @"\b(?:FEAT)-?\d+\b")?.Value;
-      if (!string.IsNullOrEmpty(epicMatch)) referencesDictionary.TryAdd(epicMatch, new List<string>());
+    var allCommits = new List<string>();
+    var sortedCommits = commits.Where(commit => commit.CommitDate != DateTime.MinValue).OrderBy(commit => commit.CommitDate).ToList();
 
-      // Iterate through matches
-      var standardMatches = Regex.Matches(commitMessage, @"\b(?:DEV|DEFECT|CHANGES|GIP|ACTION)-?\d+\b");
-      var matches = standardMatches?.Select(match => match.Value)?.ToList() ?? new List<string>();
+    // Standardise the commit references
+    string StandardiseCommitReference(string? reference)
+    {
+      // Short-Circuit
+      if (string.IsNullOrEmpty(reference)) return string.Empty;
+
+      // Checks if the commit reference was done to standard
+      var standardised = Regex.Match(reference, @"\b(?:FEAT|DEV|DEFECT|CHANGES|GIP|ACTION)-\d+\b");
+      if (standardised.Success) return reference;
+
+      // Otherwise standardises the commit
+      var standardisedReference = Regex.Replace(reference, @"(?i)\b(FEAT|DEV|DEFECT|CHANGES|GIP|ACTION)-?(\d+)\b", "$1-$2");
+      return standardisedReference;
+    }
+
+    foreach (var commitDetail in sortedCommits)
+    {
+      // Identify Matches
+      var commitMessage = commitDetail.CommitMessage.ToUpper();
+      var epicMatch = Regex.Match(commitMessage, @"\b(?:FEAT|CHANGES|DEFECT|GIP)-?\d+\b")?.Value;
+      epicMatch = StandardiseCommitReference(epicMatch);
+      var standardMatches = Regex.Matches(commitMessage, @"\b(?:DEV|ACTION)-?\d+\b");
+      var matches = standardMatches?.Select(match => StandardiseCommitReference(match.Value))?.ToList() ?? new List<string>();
+
+      // Identify PRs that were reverted and remove the references from the referencesDictionary
+      var pullRequestWasReverted = (commitMessage.Contains("REVERT") && commitMessage.Contains("PULL REQUEST"));
+      if (pullRequestWasReverted)
+      {
+        // Checks if the commit that was reverted was in the list
+        var commitIsInList = allCommits.RemoveAll(commitRef => commitMessage.Contains(commitRef)) > 0;
+        if (commitIsInList == false) continue;
+
+        // Remove the reverted commit references from the dictionary
+        // TODO:
+      }
+
+      // Epic Match
+      if (!string.IsNullOrEmpty(epicMatch))
+      {
+        // Add the commits to the dictionary / allCommits list
+        referencesDictionary.TryAdd(epicMatch, new List<string>());
+        allCommits.Add(epicMatch);
+      }
 
       // Add matches to the Epic Dictionary
       if (!string.IsNullOrEmpty(epicMatch) && referencesDictionary.TryGetValue(epicMatch, out var existingValues))
@@ -103,6 +98,7 @@ public class DiffGenerationService : IDiffGenerationService
         // Matches linked to a Feature
         var filteredMatches = matches?.Where(match => !(existingValues?.Contains(match) ?? true))?.ToList();
         referencesDictionary[epicMatch].AddRange(filteredMatches);
+        allCommits.AddRange(matches);
         continue;
       }
 
@@ -112,19 +108,18 @@ public class DiffGenerationService : IDiffGenerationService
         foreach (Match test in standardMatches)
         {
           referencesDictionary.TryAdd(test.Value, new List<string>());
+          allCommits.AddRange(matches);
         }
         continue;
       }
-      else
+
+      // Add commits without refences
+      if (referencesDictionary.TryAdd(GlobalConstants.diffCommitWithoutReference, new List<string> { commitMessage }))
       {
-        // Add commits without refences
-        if (referencesDictionary.TryAdd(GlobalConstants.diffCommitWithoutReference, new List<string> { commitMessage }))
-        {
-          referencesDictionary.TryGetValue(GlobalConstants.diffCommitWithoutReference, out var currentValue);
-          currentValue.Add(commitMessage);
-        }
-        continue;
+        referencesDictionary.TryGetValue(GlobalConstants.diffCommitWithoutReference, out var currentValue);
+        if (!currentValue.Contains(commitMessage)) currentValue.Add(commitMessage);
       }
+      continue;
     }
     return commits;
   }
