@@ -1,30 +1,34 @@
 # Git Diff Generation Tool
 
-This is a .NET 6 console application that generates Git diffs between user-specified branches or tags of multiple project repositories. It relies on a JSON configuration file to specify the locations of each project repository.
+This .NET 6 console application generates Git diffs between user-specified branches or tags of multiple project repositories. It relies on a JSON configuration file to specify the locations of each project repository. You must have **`git`** installed on your system and set up your repository authentication to use ssh.
 
 ## How to run
 
-TODO - coming soon :)
+First update the **`config.json`** file to add all the information for your repositories.
+
+Execute the **`GenerateDiffs.exe`** file and enter the relevant information for the diff you are trying to generate. 
 
 ## Configuration
 
-The application relies on the **config.json** file to specify the locations of the project repositories. Update this file with the appropriate repository paths and any other required configuration settings.
+The application relies on the **config.json** file to specify the locations of the project repositories. Update this file with the appropriate repository paths and configuration settings.
 
 Example **`config.json`**:
 
 ```json
 {
-  "Repositories": [
+  "RepositoryDetails": [
     {
       "Name": "Web",
-      "Path": "C:/Path/To/Repository1"
+      "MainBranchName": "dev",
+      "Path":  "C:\\Path\\To\\Repository2"
     },
     {
-      "Name": "Integration",
-      "Path": "C:/Path/To/Repository2"
+      "Name": "IntegrationApi",
+      "MainBranchName": "main",
+      "Path": "C:\\Path\\To\\Repository2"
     }
   ],
-  "OutputPath": "C:/Path/To/Output"
+  "OutputPath": "C:\\Path\\To\\Output"
 }
 ```
 
