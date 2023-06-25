@@ -1,5 +1,4 @@
-﻿using System.Text;
-using Models.Interfaces.Config;
+﻿using Models.Interfaces.Config;
 using Models.Interfaces.Services.DelegatorService;
 using Models.Interfaces.Services.DiffGenerationService;
 using Models.Interfaces.Services.GitCommandRunnerService;
@@ -88,11 +87,8 @@ public class DelegatorService : IDelegatorService
     var build = fetchSucceeded ? promptUserInputService.PromptBuildName() : null;
 
     // 3) Generate the raw diffs for the specified branches/tags
-    // TODO:
-
-    // 4) Save the cleaned diff to the configured path
-    // TODO:
-    return false;
+    var diffSucceeded = await diffGenerationService.GenerateRepositoryDiffsAsync(config, build, names.FirstOrDefault(), names.LastOrDefault());
+    return diffSucceeded;
   }
 
   private async Task<bool> RunValidationAsync(IConfig config, List<string> names)

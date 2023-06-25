@@ -1,7 +1,6 @@
 ﻿using Application.DiffGenerationService;
 using Application.GitCommandRunnerService;
 using Models.Models.Config;
-
 namespace Tests.ApplicationServiceTests;
 
 [TestFixture]
@@ -53,5 +52,52 @@ public class DiffGenerationServiceTests
 
     // Assert
     Assert.That(references, Is.Not.EqualTo(null));
+  }
+
+  /// <summary>
+  /// Tests the basics of the diff grouping functionality
+  /// </summary>
+  [Test]
+  public async Task TestsCommitReferenceGroupingLogic()
+  {
+    // Arrange
+    var gitCommandRunnerService = new GitCommandRunnerService();
+    var diffGenerationService = new DiffGenerationService(gitCommandRunnerService);
+    var diffsRepo1 = new Dictionary<string, List<string>>()
+    {
+      {"CommitsWithoutReferences", new List<string>{"LOCAL" } },
+      {"FEAT-1003", new List<string>{ "DEV-3418" } },
+      {"FEAT-779", new List<string>{ "DEV-3632", "DEFECT-3614", "DEV-3632" } },
+      {"FEAT-702", new List<string>{ "DEFECT-3629", "DEV-3681", "DEFECT-3673" } },
+      {"CHANGES-937", new List<string>{ "DEV-3722" } },
+      {"FEAT-7798", new List<string>{ "DEFECT-3632" } },
+      {"DEFECT-3632", new List<string>() }, // Duplicate entry (exists linked to a feature, so should be removed)
+      {"FEAT-997", new List<string>{ "DEFECT-3637", "DEFECT-3644", "DEFECT-3622" }},
+      {"FEAT-692", new List<string>{ "DEV-3191", "DEFECT-3616" } },
+      {"DEFECT-3636", new List<string>()},
+      {"GIP-12746",new List<string>()},
+      {"DEFECT-3630", new List<string>() },
+      {"DEFECT-3672", new List<string>()},
+      {"DEFECT-3646", new List<string>()},
+      {"DEFECT-3675", new List<string>() },
+      {"DEV-3418", new List<string>() }, // Duplicate entry (exists linked to a feature, so should be removed)
+      {"GIP-12456", new List<string>() },
+      {"DEFECT-3676", new List<string>() },
+      {"DEFECT-3715", new List<string>() },
+      {"DEFECT-3547", new List<string>() }
+    };
+    var diffsRepo2 = new Dictionary<string, List<string>>()
+    {
+      {"CommitsWithoutReferences", new List<string>{"Some other random commit" } }, // Combine with the above entry
+      {"FEAT-1003", new List<string>{ "DEV-3418", "DEV-9999" } }, // Add unique tickets to the existing entry
+      {"FEAT-806", new List<string>{ "DEV-3190" } } // New entry, should be added
+    };
+    var diffList = new List<Dictionary<string, List<string>>> { diffsRepo1, diffsRepo2 };
+
+    // Act
+    var groupedDiffs = diffGenerationService.GroupRawDiffs(diffList);
+
+    // Assert
+    Assert.Fail(); // TODO: temporary for now.
   }
 }

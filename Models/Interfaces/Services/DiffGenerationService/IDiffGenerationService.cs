@@ -38,11 +38,17 @@ public interface IDiffGenerationService
   /// <summary>
   /// Takes in the list of cleaned diff references for the repositories and collates them.
   /// In the process all duplicate entires will be removed to ensure there's a distinct list of commits.
-  /// The distinct list will then be formatted and structured into a single string.
   /// </summary>
   /// <param name="diffsList">A list of all extracted commits for the configured repositories</param>
+  /// <returns>The raw diffs grouped together</returns>
+  Dictionary<string, List<string>> GroupRawDiffs(List<Dictionary<string, List<string>>> diffsList);
+
+  /// <summary>
+  /// Takes in the grouped diffs and formats them into a single string.
+  /// </summary>
+  /// <param name="groupedDiffs">The group of raw diffs</param>
   /// <returns>A formatted string containing the distinct diff entries grouped by feature references</returns>
-  string ConvertDiffsToString(List<Dictionary<string, List<string>>> diffsList);
+  string ConvertDiffsToString(Dictionary<string, List<string>> groupedDiffs);
 
   /// <summary>
   /// Takes in the provided <paramref name="build"/> name, creates the folder if it isn't present

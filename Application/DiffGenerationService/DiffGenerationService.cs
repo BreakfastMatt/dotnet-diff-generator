@@ -18,7 +18,22 @@ public class DiffGenerationService : IDiffGenerationService
 
   public async Task<bool> GenerateRepositoryDiffsAsync(IConfig config, string build, string fromReference, string toReference)
   {
-    throw new NotImplementedException();
+    // Generate & clean diffs for repository
+    var diffList = new List<Dictionary<string, List<string>>>();
+    foreach (var repository in config.RepositoryDetails)
+    {
+      var rawDiff = await GenerateRawDiffForRepositoryAsync(repository, fromReference, toReference);
+      var diffReferences = ExtractCommitReferences(rawDiff);
+      diffList.Add(diffReferences);
+    }
+
+    // Convert the diffList to a string and save it to file
+    var groupedDiffs = GroupRawDiffs(diffList);
+    var cleanedDiff = ConvertDiffsToString(groupedDiffs);
+
+    // Save the cleaned diffs to the user specified build path
+    var saveSucceeded = SaveDiffsToOutputDirectory(build, cleanedDiff);
+    return saveSucceeded;
   }
 
   public async Task<List<Commit>> GenerateRawDiffForRepositoryAsync(IRepositoryDetails repoDetail, string fromReference, string toReference)
@@ -72,9 +87,9 @@ public class DiffGenerationService : IDiffGenerationService
     {
       // Identify Matches
       var commitMessage = commitDetail.CommitMessage.ToUpper();
-      var epicMatch = Regex.Match(commitMessage, @"\b(?:FEAT|CHANGES|DEFECT|GIP)-?\d+\b")?.Value;
+      var epicMatch = Regex.Match(commitMessage, @"\b(?:FEAT|CHANGES|GIP)-?\d+\b")?.Value;
       epicMatch = StandardiseCommitReference(epicMatch);
-      var standardMatches = Regex.Matches(commitMessage, @"\b(?:DEV|ACTION)-?\d+\b");
+      var standardMatches = Regex.Matches(commitMessage, @"\b(?:DEV|DEFECT|ACTION)-?\d+\b");
       var matches = standardMatches?.Select(match => StandardiseCommitReference(match.Value))?.ToList() ?? new List<string>();
 
       // Identify PRs that were reverted and remove the references from the referencesDictionary
@@ -141,13 +156,21 @@ public class DiffGenerationService : IDiffGenerationService
     return referencesDictionary;
   }
 
-  public string ConvertDiffsToString(List<Dictionary<string, List<string>>> diffsList)
+  public Dictionary<string, List<string>> GroupRawDiffs(List<Dictionary<string, List<string>>> diffsList)
   {
     throw new NotImplementedException();
   }
 
-  public bool SaveDiffsToOutputDirectory(string build, string diffs)
+  public string ConvertDiffsToString(Dictionary<string, List<string>> groupedDiffs)
   {
+    throw new NotImplementedException();
+  }
+
+  public bool SaveDiffsToOutputDirectory(string build, string diffs) // TODO: consider .csv logic (can add this later)
+  {
+    // TODO: validate build driectory
+    // TODO: create the build directory if not present
+    // TODO: save the diffs to the build
     throw new NotImplementedException();
   }
 }
