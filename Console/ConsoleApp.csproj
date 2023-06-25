@@ -7,15 +7,22 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <!-- Renames the published .exe file -->
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PublishProfile>GenerateDiffs</PublishProfile>
+  </PropertyGroup>
+
+  <!-- Ensures the config.json file gets redirected on build -->
+  <ItemGroup>
+    <AdditionalFiles Include="..\Config.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <!-- Project dependencies -->
   <ItemGroup>
     <ProjectReference Include="..\Application\Application.csproj" />
     <ProjectReference Include="..\Dependencies\Dependencies.csproj" />
     <ProjectReference Include="..\Domain\Domain.csproj" />
     <ProjectReference Include="..\Models\Models.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <AdditionalFiles Include="..\Config.json" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
 </Project>
