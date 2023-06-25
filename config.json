@@ -3,6 +3,10 @@
     {
       "Name": "Web",
       "Path": "C:\\Clients\\Singular\\Git-Diff-Generator-Tests\\inn8.web"
+    },
+    {
+      "Name": "IntegrationApi",
+      "Path": "C:\\Clients\\Singular\\Git-Diff-Generator-Tests\\inn8.integration"
     }
   ],
   "OutputPath": "C:\\Clients\\Singular\\Git-Diff-Generator-Tests\\generated diffs"

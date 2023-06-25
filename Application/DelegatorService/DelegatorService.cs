@@ -87,7 +87,7 @@ public class DelegatorService : IDelegatorService
     var build = fetchSucceeded ? promptUserInputService.PromptBuildName() : null;
 
     // 3) Generate the raw diffs for the specified branches/tags
-    var diffSucceeded = await diffGenerationService.GenerateRepositoryDiffsAsync(config, build, names.FirstOrDefault(), names.LastOrDefault());
+    var diffSucceeded = fetchSucceeded && await diffGenerationService.GenerateRepositoryDiffsAsync(config, build, names.FirstOrDefault(), names.LastOrDefault());
     return diffSucceeded;
   }
 
