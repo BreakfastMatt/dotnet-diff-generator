@@ -47,6 +47,7 @@ dotnet publish ConsoleApp.csproj -c Release -r win-x64 --self-contained true -p:
 ```
 
 ## Upcoming Features
-1. Improve the UX (notify users of repository level progress)
+1. Improve the UX (notify users of repository-level progress)
 2. Rewrite some of the logic to utilise things like Linq queries instead of nested loops
 3. Fix the console output timing inconsistencies (requiring user input for the buffer to be flushed to the console)
+4. Update & complete remaining unit tests
