@@ -285,12 +285,11 @@ public class DiffGenerationService : IDiffGenerationService
     try
     {
       // Create directory if it doesn't exist yet
-      var buildFolderPath = $"{path}\\{build}";
-      var buildFolderExists = Directory.Exists(buildFolderPath);
-      if (!buildFolderExists) Directory.CreateDirectory(buildFolderPath);
+      var buildFolderExists = Directory.Exists(path);
+      if (!buildFolderExists) Directory.CreateDirectory(path);
 
       // Save the file
-      var textFilePath = $"{buildFolderPath}\\cleaned_diff.txt";
+      var textFilePath = $"{path}\\{build}.txt";
       File.WriteAllText(textFilePath, diffs);
       Console.WriteLine($"\nFile saved successfully to: {textFilePath}");
       Console.Out.Flush();
