@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Channels;
+using Microsoft.Extensions.Primitives;
 using Models.Constants;
 using Models.Interfaces.Config;
 using Models.Interfaces.Services.DiffGenerationService;
@@ -216,22 +217,43 @@ public class DiffGenerationService : IDiffGenerationService
     var actions = groupedDiffs.Where(diff => diff.Key.Contains("ACTION-")).OrderBy(entry => entry.Key).ToDictionary(key => key.Key, value => value.Value);
     var improperCommits = groupedDiffs.Where(diff => diff.Key.Contains("DEV-") || diff.Key.Contains(GlobalConstants.diffCommitWithoutReference)).OrderBy(entry => entry.Key).ToDictionary(key => key.Key, value => value.Value);
 
-
     // Build the string
     var stringbuilder = new StringBuilder();
-    stringbuilder.Append(ConvertDiffSectionToString(features));
-    //stringbuilder.Append(ConvertDiffSectionToString(changes));
-    //stringbuilder.Append(ConvertDiffSectionToString(defects));
-    //stringbuilder.Append(ConvertDiffSectionToString(gips));
-    //stringbuilder.Append(ConvertDiffSectionToString(actions));
-    //stringbuilder.Append(ConvertDiffSectionToString(improperCommits));
-    var stringDiff = stringbuilder.ToString();
+    stringbuilder.AppendLine(ConvertDiffSectionToString(features));
+    stringbuilder.AppendLine(ConvertDiffSectionToString(changes));
+    stringbuilder.AppendLine(ConvertDiffSectionToString(defects));
+    stringbuilder.AppendLine(ConvertDiffSectionToString(gips));
+    stringbuilder.AppendLine(ConvertDiffSectionToString(actions));
+    stringbuilder.AppendLine(ConvertDiffSectionToString(improperCommits, true));
+    var stringDiff = stringbuilder.ToString().Trim();
     return stringDiff;
   }
 
-  private string ConvertDiffSectionToString(Dictionary<string, List<string>> diffSection)
+  private static string ConvertDiffSectionToString(Dictionary<string, List<string>> diffSection, bool nonStandard = false)
   {
-    return string.Empty;
+    // Converts the diff section to a string
+    var stringbuilder = new StringBuilder();
+    if (nonStandard) stringbuilder.AppendLine("Commits without references:");
+    foreach (var keyValuePair in diffSection)
+    {
+      // Adds the epic link
+      var referencelessCommit = nonStandard && keyValuePair.Key == GlobalConstants.diffCommitWithoutReference;
+      if (!referencelessCommit) stringbuilder.AppendLine(keyValuePair.Key);
+
+      // Adds the tickets linked to the epic (if applicable)
+      foreach (var value in keyValuePair.Value)
+      {
+        // The tickets linked to the epic
+        stringbuilder.AppendLine(value);
+      }
+      // Adds blank line separator
+      if (!nonStandard) stringbuilder.AppendLine();
+    }
+
+    // Builds the diffSection to string
+    var diffSectionString = stringbuilder.ToString().TrimEnd();
+    diffSectionString += "\n";
+    return diffSectionString;
   }
 
   public bool SaveDiffsToOutputDirectory(string build, string diffs) // TODO: consider .csv logic (can add this later)

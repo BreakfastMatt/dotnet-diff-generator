@@ -123,7 +123,7 @@ public class DiffGenerationServiceTests
     var diffString = diffGenerationService.ConvertDiffsToString(diffsInput);
 
     // Assert
-    var expected = "FEAT-1:\r\nDEV-1\r\nDEV-2\r\nDEV-6\r\n\t\r\nFEAT-2:\r\nDEV-3\r\nDEV-4\r\nDEV-7\r\n\t\r\nFEAT-3:\r\nDEV-5\r\nDEV-9\r\nDEFECT-3\r\n\r\nFEAT-4:\r\nDEV-8\r\n\t\r\nFEAT-5:\r\nACTION-3\r\n\r\nCHANGES-1\r\n\r\nCHANGES-2:\r\nDEV-10\r\n\t\r\nDEFECT-1\r\n\r\nDEFECT-2:\r\nDEV-11\r\n\t\t\r\nGIP-1\r\n\r\nGIP-2\r\nDEV-12\r\n\t\r\nACTION-1\r\nDEV-13\r\n\r\nACTION-2";
+    var expected = "FEAT-1\r\nDEV-1\r\nDEV-2\r\nDEV-6\r\n\r\nFEAT-2\r\nDEV-3\r\nDEV-4\r\nDEV-7\r\n\r\nFEAT-3\r\nDEV-5\r\nDEV-9\r\nDEFECT-3\r\n\r\nFEAT-4\r\nDEV-8\r\n\r\nFEAT-5\r\nACTION-3\n\r\nCHANGES-1\r\n\r\nCHANGES-2\r\nDEV-10\n\r\nDEFECT-1\r\n\r\nDEFECT-2\r\nDEV-11\n\r\nGIP-1\r\n\r\nGIP-2\r\nDEV-12\n\r\nACTION-1\r\nDEV-13\r\n\r\nACTION-2\n\r\nCommits without references:\r\nrandom commit without reference\r\nanother random commit\r\nDEV-14";
     Assert.That(diffString, Is.EqualTo(expected));
   }
 }
