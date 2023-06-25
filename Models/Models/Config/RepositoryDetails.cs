@@ -6,4 +6,5 @@ public class RepositoryDetails : IRepositoryDetails
 {
   public string Name { get; set; }
   public string Path { get; set; }
+  public string MainBranchName { get; set; }
 }

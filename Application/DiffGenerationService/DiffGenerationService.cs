@@ -40,9 +40,13 @@ public class DiffGenerationService : IDiffGenerationService
 
   public async Task<List<Commit>> GenerateRawDiffForRepositoryAsync(IRepositoryDetails repoDetail, string fromReference, string toReference)
   {
+    // Sets the main branch name for the specified repository
+    var configuredFromReference = (fromReference.ToUpper().Equals("DEV") || fromReference.ToUpper().Equals("MAIN")) ? repoDetail.MainBranchName : fromReference;
+    var configuredToReference = (toReference.ToUpper().Equals("DEV") || toReference.ToUpper().Equals("MAIN")) ? repoDetail.MainBranchName : toReference;
+
     // Generates the raw diffs for the repository
     gitCommandRunnerService.SetGitRepoDetail(repoDetail);
-    var rawDiffs = await gitCommandRunnerService.GitLogAsync(fromReference, toReference);
+    var rawDiffs = await gitCommandRunnerService.GitLogAsync(configuredFromReference, configuredToReference);
     var commitDetails = rawDiffs
       ?.Split(GlobalConstants.gitLogDiffSeparator)
       ?.Select(rawDiffLine =>

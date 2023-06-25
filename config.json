@@ -2,10 +2,12 @@
   "RepositoryDetails": [
     {
       "Name": "Web",
+      "MainBranchName": "dev",
       "Path": "C:\\Clients\\Singular\\Git-Diff-Generator-Tests\\inn8.web"
     },
     {
       "Name": "IntegrationApi",
+      "MainBranchName": "dev",
       "Path": "C:\\Clients\\Singular\\Git-Diff-Generator-Tests\\inn8.integration"
     }
   ],
