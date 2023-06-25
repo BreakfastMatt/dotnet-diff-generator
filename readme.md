@@ -45,3 +45,8 @@ if the above command succeeded then open a terminal in the Git-Diff-Generator\Co
 ```powershell
 dotnet publish ConsoleApp.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true --output "C:\Users\MLewis\Desktop\files"
 ```
+
+## Upcoming Features
+1. Improve the UX (notify users of repository level progress)
+2. Rewrite some of the logic to utilise things like Linq queries instead of nested loops
+3. Fix the console output timing inconsistencies (requiring user input for the buffer to be flushed to the console)
