@@ -1,5 +1,6 @@
 ﻿using Application.DiffGenerationService;
 using Application.GitCommandRunnerService;
+using Models.Constants;
 using Models.Models.Config;
 namespace Tests.ApplicationServiceTests;
 
@@ -58,11 +59,10 @@ public class DiffGenerationServiceTests
   /// Tests the basics of the diff grouping functionality
   /// </summary>
   [Test]
-  public async Task TestsCommitReferenceGroupingLogic()
+  public void TestsCommitReferenceGroupingLogic()
   {
     // Arrange
-    var gitCommandRunnerService = new GitCommandRunnerService();
-    var diffGenerationService = new DiffGenerationService(gitCommandRunnerService);
+    var diffGenerationService = new DiffGenerationService(new GitCommandRunnerService());
     var diffsRepo1 = new Dictionary<string, List<string>>
     {
       { "Key1", new List<string> { "Ref1", "Ref2" } },
@@ -91,34 +91,39 @@ public class DiffGenerationServiceTests
     };
     Assert.That(groupedDiffs, Is.EquivalentTo(expected));
   }
-}
 
-//var diffsRepo1 = new Dictionary<string, List<string>>()
-//{
-//  {"CommitsWithoutReferences", new List<string>{"LOCAL" } },
-//  {"FEAT-1003", new List<string>{ "DEV-3418" } },
-//  {"FEAT-779", new List<string>{ "DEV-3632", "DEFECT-3614", "DEV-3632" } },
-//  {"FEAT-702", new List<string>{ "DEFECT-3629", "DEV-3681", "DEFECT-3673" } },
-//  {"CHANGES-937", new List<string>{ "DEV-3722" } },
-//  {"FEAT-7798", new List<string>{ "DEFECT-3632" } },
-//  {"DEFECT-3632", new List<string>() }, // Duplicate entry (exists linked to a feature, so should be removed)
-//  {"FEAT-997", new List<string>{ "DEFECT-3637", "DEFECT-3644", "DEFECT-3622" }},
-//  {"FEAT-692", new List<string>{ "DEV-3191", "DEFECT-3616" } },
-//  {"DEFECT-3636", new List<string>()},
-//  {"GIP-12746",new List<string>()},
-//  {"DEFECT-3630", new List<string>() },
-//  {"DEFECT-3672", new List<string>()},
-//  {"DEFECT-3646", new List<string>()},
-//  {"DEFECT-3675", new List<string>() },
-//  {"DEV-3418", new List<string>() }, // Duplicate entry (exists linked to a feature, so should be removed)
-//  {"GIP-12456", new List<string>() },
-//  {"DEFECT-3676", new List<string>() },
-//  {"DEFECT-3715", new List<string>() },
-//  {"DEFECT-3547", new List<string>() }
-//};
-//var diffsRepo2 = new Dictionary<string, List<string>>()
-//{
-//  {"CommitsWithoutReferences", new List<string>{"Some other random commit" } }, // Combine with the above entry
-//  {"FEAT-1003", new List<string>{ "DEV-3418", "DEV-9999" } }, // Add unique tickets to the existing entry
-//  {"FEAT-806", new List<string>{ "DEV-3190" } } // New entry, should be added
-//};
+  /// <summary>
+  /// Tests the string conversion logic for the diffs.
+  /// </summary>
+  [Test]
+  public void TestsConvertDiffsToStringLogic()
+  {
+    // Arrange
+    var diffGenerationService = new DiffGenerationService(new GitCommandRunnerService());
+    var diffsInput = new Dictionary<string, List<string>>
+    {
+      { "FEAT-1", new List<string> { "DEV-1", "DEV-2", "DEV-6" } },
+      { "CHANGES-1", new List<string>() },
+      { "FEAT-2", new List<string> { "DEV-3", "DEV-4", "DEV-7" } },
+      { "DEFECT-1", new List<string>() },
+      { "FEAT-3", new List<string> { "DEV-5", "DEV-9", "DEFECT-3" } },
+      { "GIP-2", new List<string> { "DEV-12" } },
+      { "DEFECT-2", new List<string> { "DEV-11" } },
+      { "ACTION-1", new List<string> { "DEV-13" } },
+      { "CHANGES-2", new List<string>{ "DEV-10" } },
+      { "FEAT-4", new List<string> { "DEV-8" } },
+      { "ACTION-2", new List<string>() },
+      { GlobalConstants.diffCommitWithoutReference, new List<string>{"random commit without reference", "another random commit"} },
+      { "GIP-1", new List<string> () },
+      { "FEAT-5", new List<string> { "ACTION-3" } },
+      { "DEV-14", new List<string>() },
+    };
+
+    // Act
+    var diffString = diffGenerationService.ConvertDiffsToString(diffsInput);
+
+    // Assert
+    var expected = "FEAT-1:\r\nDEV-1\r\nDEV-2\r\nDEV-6\r\n\t\r\nFEAT-2:\r\nDEV-3\r\nDEV-4\r\nDEV-7\r\n\t\r\nFEAT-3:\r\nDEV-5\r\nDEV-9\r\nDEFECT-3\r\n\r\nFEAT-4:\r\nDEV-8\r\n\t\r\nFEAT-5:\r\nACTION-3\r\n\r\nCHANGES-1\r\n\r\nCHANGES-2:\r\nDEV-10\r\n\t\r\nDEFECT-1\r\n\r\nDEFECT-2:\r\nDEV-11\r\n\t\t\r\nGIP-1\r\n\r\nGIP-2\r\nDEV-12\r\n\t\r\nACTION-1\r\nDEV-13\r\n\r\nACTION-2";
+    Assert.That(diffString, Is.EqualTo(expected));
+  }
+}

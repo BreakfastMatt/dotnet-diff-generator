@@ -1,4 +1,6 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading.Channels;
 using Models.Constants;
 using Models.Interfaces.Config;
 using Models.Interfaces.Services.DiffGenerationService;
@@ -206,7 +208,30 @@ public class DiffGenerationService : IDiffGenerationService
 
   public string ConvertDiffsToString(Dictionary<string, List<string>> groupedDiffs)
   {
-    throw new NotImplementedException();
+    // Group the diffs into the order in which they'll appear in the final string
+    var features = groupedDiffs.Where(diff => diff.Key.Contains("FEAT-")).OrderBy(entry => entry.Key).ToDictionary(key => key.Key, value => value.Value);
+    var changes = groupedDiffs.Where(diff => diff.Key.Contains("CHANGES-")).OrderBy(entry => entry.Key).ToDictionary(key => key.Key, value => value.Value);
+    var defects = groupedDiffs.Where(diff => diff.Key.Contains("DEFECT-")).OrderBy(entry => entry.Key).ToDictionary(key => key.Key, value => value.Value);
+    var gips = groupedDiffs.Where(diff => diff.Key.Contains("GIP-")).OrderBy(entry => entry.Key).ToDictionary(key => key.Key, value => value.Value);
+    var actions = groupedDiffs.Where(diff => diff.Key.Contains("ACTION-")).OrderBy(entry => entry.Key).ToDictionary(key => key.Key, value => value.Value);
+    var improperCommits = groupedDiffs.Where(diff => diff.Key.Contains("DEV-") || diff.Key.Contains(GlobalConstants.diffCommitWithoutReference)).OrderBy(entry => entry.Key).ToDictionary(key => key.Key, value => value.Value);
+
+
+    // Build the string
+    var stringbuilder = new StringBuilder();
+    stringbuilder.Append(ConvertDiffSectionToString(features));
+    //stringbuilder.Append(ConvertDiffSectionToString(changes));
+    //stringbuilder.Append(ConvertDiffSectionToString(defects));
+    //stringbuilder.Append(ConvertDiffSectionToString(gips));
+    //stringbuilder.Append(ConvertDiffSectionToString(actions));
+    //stringbuilder.Append(ConvertDiffSectionToString(improperCommits));
+    var stringDiff = stringbuilder.ToString();
+    return stringDiff;
+  }
+
+  private string ConvertDiffSectionToString(Dictionary<string, List<string>> diffSection)
+  {
+    return string.Empty;
   }
 
   public bool SaveDiffsToOutputDirectory(string build, string diffs) // TODO: consider .csv logic (can add this later)
