@@ -91,7 +91,7 @@ public class GitCommandRunnerService : IGitCommandRunnerService
     // Executes the 'git log' command to pull the diff for the repository
     var fromDiff = Regex.Match(from, @"^\d{1,2}\.\d{1,2}\.\d{1,2}(\.\d{1,2})?$").Success ? $"{from}" : $"{this.remote}/{from}";
     var toDiff = Regex.Match(to, @"^\d{1,2}\.\d{1,2}\.\d{1,2}(\.\d{1,2})?$").Success ? $"{to}" : $"{this.remote}/{to}";
-    var gitLogCommand = $"log {fromDiff}..{toDiff} --no-merges --pretty=format:\"%an{GlobalConstants.gitLogDelimiter}%s\"";
+    var gitLogCommand = $"log {fromDiff}..{toDiff} --no-merges --pretty=format:\"%an{GlobalConstants.gitLogDelimiter}%s{GlobalConstants.gitLogDelimiter}%ci";
     var logOutput = await ExecuteGitCommandAsync(gitLogCommand);
     return logOutput;
   }
