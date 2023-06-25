@@ -7,20 +7,20 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 
-    <!-- Renames the published .exe file -->
-    <PublishSingleFile>true</PublishSingleFile>
-    <PublishTrimmed>true</PublishTrimmed>
+    <!-- Publishing information-->
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     <SelfContained>true</SelfContained>
     <PublishReadyToRun>false</PublishReadyToRun>
     <PublishDir>bin\Release\net6.0\win-x64\publish</PublishDir>
+
+    <!-- Renames the published .exe file -->
     <AssemblyName>GenerateDiffs</AssemblyName>
     <OutputFile>GenerateDiffs.exe</OutputFile>
   </PropertyGroup>
 
   <!-- Ensures the config.json file gets redirected on build -->
   <ItemGroup>
-    <AdditionalFiles Include="..\Config.json" CopyToOutputDirectory="PreserveNewest" />
+    <AdditionalFiles Include="..\config.json" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
   <!-- Project dependencies -->
