@@ -34,7 +34,7 @@ public class DiffGenerationService : IDiffGenerationService
     var cleanedDiff = ConvertDiffsToString(groupedDiffs);
 
     // Save the cleaned diffs to the user specified build path
-    var saveSucceeded = SaveDiffsToOutputDirectory(build, cleanedDiff);
+    var saveSucceeded = SaveDiffsToOutputDirectory(config.OutputPath, build, cleanedDiff);
     return saveSucceeded;
   }
 
@@ -273,11 +273,25 @@ public class DiffGenerationService : IDiffGenerationService
     return diffSectionString;
   }
 
-  public bool SaveDiffsToOutputDirectory(string build, string diffs) // TODO: consider .csv logic (can add this later)
+  public bool SaveDiffsToOutputDirectory(string path, string build, string diffs)
   {
-    // TODO: validate build driectory
-    // TODO: create the build directory if not present
-    // TODO: save the diffs to the build
-    throw new NotImplementedException();
+    try
+    {
+      // Create directory if it doesn't exist yet
+      var buildFolderPath = $"{path}\\{build}";
+      var buildFolderExists = Directory.Exists(buildFolderPath);
+      if (!buildFolderExists) Directory.CreateDirectory(buildFolderPath);
+
+      // Save the file
+      var textFilePath = $"{buildFolderPath}\\cleaned_diff.txt";
+      File.WriteAllText(textFilePath, diffs);
+      Console.WriteLine("File saved successfully.");
+      return true;
+    }
+    catch (Exception ex)
+    {
+      Console.WriteLine("Failed to save the diffs, please verify that the save path exists");
+      return false;
+    }
   }
 }

@@ -54,8 +54,9 @@ public interface IDiffGenerationService
   /// Takes in the provided <paramref name="build"/> name, creates the folder if it isn't present
   /// and saves the <paramref name="diffs"/> to a file in this folder.
   /// </summary>
+  /// <param name="path">The path to save the diffs to</param>
   /// <param name="build">The unique name for the build as provided by the user</param>
   /// <param name="diffs">The extracted commits for the configured repositories</param>
   /// <returns>True if the save was successful, otherwise false</returns>
-  bool SaveDiffsToOutputDirectory(string build, string diffs);
+  bool SaveDiffsToOutputDirectory(string path, string build, string diffs);
 }

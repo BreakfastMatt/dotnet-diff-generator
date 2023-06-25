@@ -2,8 +2,8 @@
   "RepositoryDetails": [
     {
       "Name": "Web",
-      "Path": "C:\\Path\\To\\Repository1"
+      "Path": "C:\\Clients\\Singular\\Git-Diff-Generator-Tests\\inn8.web"
     }
   ],
-  "OutputPath": "C:\\Path\\To\\Output"
+  "OutputPath": "C:\\Clients\\Singular\\Git-Diff-Generator-Tests\\generated diffs"
 }
