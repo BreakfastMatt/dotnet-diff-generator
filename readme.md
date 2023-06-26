@@ -47,7 +47,8 @@ dotnet publish ConsoleApp.csproj -c Release -r win-x64 --self-contained true -p:
 ```
 
 ## Upcoming Features
-1. Improve the UX (notify users of repository-level progress)
-2. Rewrite some of the logic to utilise things like Linq queries instead of nested loops
-3. Fix the console output timing inconsistencies (requiring user input for the buffer to be flushed to the console)
-4. Update & complete remaining unit tests
+1. Branch & Tag name prompting when entering from/to references (e.g. double tap tab to show branches/tags with that naming)
+2. Improve the UX (notify users of repository-level progress)
+3. Rewrite some of the logic to utilise things like Linq queries instead of nested loops
+4. Fix the console output timing inconsistencies (requiring user input for the buffer to be flushed to the console)
+5. Update & complete remaining unit tests
