@@ -52,3 +52,4 @@ dotnet publish ConsoleApp.csproj -c Release -r win-x64 --self-contained true -p:
 3. Rewrite some of the logic to utilise things like Linq queries instead of nested loops
 4. Fix the console output timing inconsistencies (requiring user input for the buffer to be flushed to the console)
 5. Update & complete remaining unit tests
+6. Add logic to make the diff reference extraction and grouping logic dynamic/configurable (project agnostic)
