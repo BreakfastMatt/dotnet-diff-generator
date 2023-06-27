@@ -34,7 +34,7 @@ Example **`config.json`**:
 
 ## Build the Application
 
-To build this application you will need to navigate to the Git-Diff-Generator\Console folder and run the following command:
+To build this application you either need to run the **`publish-script.ps1`** file or you need to navigate to the Git-Diff-Generator\Console folder and run the following command:
 
 ```powershell
 dotnet publish ConsoleApp.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true --output "C:\Users\MLewis\Desktop\files"
