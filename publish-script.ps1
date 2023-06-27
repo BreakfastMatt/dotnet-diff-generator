@@ -1,9 +1,3 @@
-# Change directory to the Git-Diff-Generator folder
-Set-Location -Path '.\'
-
-# Run dotnet publish for the Git-Diff-Generator project
-dotnet publish -c Release -r win-x64
-
 # Change directory to the Console folder
 Set-Location -Path '.\Console'
 
