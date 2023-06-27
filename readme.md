@@ -34,13 +34,7 @@ Example **`config.json`**:
 
 ## Build the Application
 
-In visual studio, open the terminal and run this command:
-
-```powershell
-dotnet publish -c Release -r win-x64
-```
-
-if the above command succeeded then open a terminal in the Git-Diff-Generator\Console folder and run this command:
+To build this application you will need to navigate to the Git-Diff-Generator\Console folder and run the following command:
 
 ```powershell
 dotnet publish ConsoleApp.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true --output "C:\Users\MLewis\Desktop\files"
