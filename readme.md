@@ -41,11 +41,14 @@ dotnet publish ConsoleApp.csproj -c Release -r win-x64 --self-contained true -p:
 ```
 
 ## Upcoming Features
-1. Branch & Tag name prompting when entering from/to references (e.g. double tap tab to show branches/tags with that naming)
-2. Improve the UX (notify users of repository-level progress)
-3. Add GUI
-4. Rewrite some of the logic to utilise things like Linq queries instead of nested loops
-5. Fix the console output timing inconsistencies (requiring user input for the buffer to be flushed to the console)
-6. Update & complete remaining unit tests
-7. Add logic to make the diff reference extraction and grouping logic dynamic/configurable (project agnostic)
-8. Update logic to output a .csv file instead of a text file
+1. Replace the console application with a GUI variant (consider using .NET Maui)
+2. Add searchable dropdown lists to select the from/to branches or tags.
+3. Dropdown lists should be a distinct list of all branches and tags taken from all of the repos.
+4. Options that are not common to all repos should be highlighted in some manner (ability to select different from/to branches per repo?)
+5. Notify users of repository-level progress (can split the GUI in two, having repos & branches on the left and then a console window on the right where the in-progress detail can be added)
+6. Allow overriding the from/to branch at the repo level (for when there are inconsistencies across repos)
+7. Update the file saving logic to output to a .csv (check with the team for what would be desired here)
+8. Rewrite the diff generation logic to execute asynchronously
+9. Rewrite some of the diff reference extraction logic to be more dynamic/configurable (project agnostic)
+10. Update & complete the remaining unit tests
+11. Update documentation
