@@ -1,9 +1,7 @@
-﻿using Application.GitCommandRunnerService;
+﻿namespace Tests.ApplicationServiceTests;
+using Application.GitCommandRunnerService;
 using Application.ValidateRepositoryDetailsService;
 using Models.Models.Config;
-using NuGet.Frameworks;
-
-namespace Tests.ApplicationServiceTests;
 
 [TestFixture]
 public class ValidateRepositoryDetailsServiceTests

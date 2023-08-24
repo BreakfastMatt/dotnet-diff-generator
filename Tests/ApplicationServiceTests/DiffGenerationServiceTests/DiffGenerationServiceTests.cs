@@ -1,8 +1,8 @@
-﻿using Application.DiffGenerationService;
+﻿namespace Tests.ApplicationServiceTests;
+using Application.DiffGenerationService;
 using Application.GitCommandRunnerService;
 using Models.Constants;
 using Models.Models.Config;
-namespace Tests.ApplicationServiceTests;
 
 [TestFixture]
 public class DiffGenerationServiceTests

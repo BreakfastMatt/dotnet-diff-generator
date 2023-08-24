@@ -1,7 +1,6 @@
-﻿using Application.GitCommandRunnerService;
+﻿namespace Tests.ApplicationServiceTests;
+using Application.GitCommandRunnerService;
 using Models.Models.Config;
-
-namespace Tests.ApplicationServiceTests;
 
 [TestFixture]
 // TODO: note a mock repo needs to be setup to test against here (will add a config.json file to the test project to allow this to be configured by the user)
