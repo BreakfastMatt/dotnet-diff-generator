@@ -1,4 +1,5 @@
-﻿using Application.DelegatorService;
+﻿namespace ConsoleApp;
+using Application.DelegatorService;
 using Application.DiffGenerationService;
 using Application.GitCommandRunnerService;
 using Application.PromptUserInputService;
@@ -14,8 +15,6 @@ using Models.Interfaces.Services.JsonSerialiser;
 using Models.Interfaces.Services.PromptUserInputService;
 using Models.Interfaces.Services.ReadFromConfigService;
 using Models.Interfaces.Services.ValidateRepositoryDetailsService;
-
-namespace ConsoleApp;
 
 public class Program
 {
@@ -49,4 +48,3 @@ public class Program
     await service.DelegateAsync();
   }
 }
-
