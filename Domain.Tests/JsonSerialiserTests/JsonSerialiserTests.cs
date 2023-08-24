@@ -1,7 +1,6 @@
-﻿namespace Tests.DomainServiceTests;
+﻿namespace Domain.Tests.JsonSerialiserTests;
 using Domain.JsonSerialiser;
 
-[TestFixture]
 public class JsonSerialiserTests
 {
   /// <summary>
@@ -13,22 +12,23 @@ public class JsonSerialiserTests
     public string? StringProp { get; set; }
     public decimal? DecimalProp { get; set; }
     public bool? BoolProp { get; set; }
-  }
-  private static bool JsonSerialiserTestModelEquality(JsonSerialiserTestModel obj1, JsonSerialiserTestModel obj2)
-  {
-    // Checks the underlying properties on the objects
-    var equality = obj1.IntProp == obj1.IntProp
-      && obj1.StringProp == obj2.StringProp
-      && obj1.DecimalProp == obj2.DecimalProp
-      && obj1.BoolProp == obj2.BoolProp;
-    return equality;
+
+    public static bool IsEqual(JsonSerialiserTestModel obj1, JsonSerialiserTestModel obj2)
+    {
+      // Checks the underlying properties on the objects
+      var equality = obj1.IntProp == obj2.IntProp
+        && obj1.StringProp == obj2.StringProp
+        && obj1.DecimalProp == obj2.DecimalProp
+        && obj1.BoolProp == obj2.BoolProp;
+      return equality;
+    }
   }
 
   /// <summary>
   /// Tests the deserialisation of a JSON-string functionality
   /// </summary>
-  [Test]
-  public void JsonDeserialiserTest()
+  [Fact]
+  public void DeserializeObject_ForHardcodedModel_ShouldReturnExpectedOutput()
   {
     // Arrange
     var jsonSerialiser = new JsonSerialiser();
@@ -39,14 +39,15 @@ public class JsonSerialiserTests
 
     // Assert
     var expected = new JsonSerialiserTestModel { StringProp = "Hello world!" };
-    Assert.That(JsonSerialiserTestModelEquality(deserialisedResponse, expected), Is.True);
+    Assert.Equivalent(expected, deserialisedResponse);
+    //Assert.True(JsonSerialiserTestModel.IsEqual(deserialisedResponse, expected));
   }
 
   /// <summary>
   /// Tests the serialisiation of a C# object to json functionality
   /// </summary>
-  [Test]
-  public void JsonSerialiserTest()
+  [Fact]
+  public void SerializeObject_ForHardcodedModel_ShouldReturnExpectedOutput()
   {
     // Arrange
     var jsonSerialiser = new JsonSerialiser();
@@ -57,6 +58,6 @@ public class JsonSerialiserTests
 
     // Assert
     var expected = "{\"IntProp\":5}";
-    Assert.That(serialisedResponse?.Equals(expected) ?? false, Is.True);
+    Assert.Equal(serialisedResponse, expected);
   }
 }

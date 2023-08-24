@@ -1,65 +1,58 @@
-﻿namespace Tests.ApplicationServiceTests;
+﻿namespace Application.Tests.DiffGenerationServiceTests;
 using Application.DiffGenerationService;
 using Application.GitCommandRunnerService;
+using Application.Tests;
 using Models.Constants;
 using Models.Models.Config;
 
-[TestFixture]
 public class DiffGenerationServiceTests
 {
-  /// <summary>
-  /// The Test Repo to run the tests against
-  /// </summary>
-  public const string repoName = "C:\\Clients\\Singular\\Git-Diff-Generator-Tests\\inn8.web"; // TODO: have this config driven.
-
-  /// <summary>
-  /// Tests the raw diff generation logic.
-  /// </summary>
-  [Test]
-  public async Task TestsRawDiffGeneration()
+  [Fact]
+  public async Task GenerateRawDiffForRepositoryAsync_ForValidBuild_ShouldReturnNonEmptyDiff()
   {
     // Arrange
     var gitCommandRunnerService = new GitCommandRunnerService();
     var diffGenerationService = new DiffGenerationService(gitCommandRunnerService);
-    var repoDetails = new RepositoryDetails { Name = "Git-Diff-Generator-Test", Path = repoName };
+    var repoDetails = new RepositoryDetails { Name = "Git-Diff-Generator-Test", Path = Constants.TestRepositoryName };
     gitCommandRunnerService.SetGitRepoDetail(repoDetails);
 
     // Act
-    await gitCommandRunnerService.GitFetchAsync("11.8.1.0");
-    await gitCommandRunnerService.GitFetchAsync("11.8.2");
-    var diffOutput = await diffGenerationService.GenerateRawDiffForRepositoryAsync(repoDetails, "11.8.1.0", "11.8.2");
+    await gitCommandRunnerService.GitFetchAsync("11.8.5");
+    await gitCommandRunnerService.GitFetchAsync("11.8.6");
+    var diffOutput = await diffGenerationService.GenerateRawDiffForRepositoryAsync(repoDetails, "11.8.5", "11.8.6");
 
     // Assert
-    Assert.That(diffOutput, Is.Not.EqualTo(null));
+    Assert.NotNull(diffOutput);
   }
 
   /// <summary>
   /// Tests the raw diff generation logic JRIA reference extraction logic
   /// </summary>
-  [Test]
-  public async Task TestsCommitReferenceExtraction()
+  [Fact]
+  public async Task ExtractCommitReferences_ForValidBuild_ShouldReturnReferences()
   {
     // Arrange
     var gitCommandRunnerService = new GitCommandRunnerService();
     var diffGenerationService = new DiffGenerationService(gitCommandRunnerService);
-    var repoDetails = new RepositoryDetails { Name = "Git-Diff-Generator-Test", Path = repoName };
+    var repoDetails = new RepositoryDetails { Name = "Git-Diff-Generator-Test", Path = Constants.TestRepositoryName };
     gitCommandRunnerService.SetGitRepoDetail(repoDetails);
 
     // Act
-    await gitCommandRunnerService.GitFetchAsync("11.8.1.0");
-    await gitCommandRunnerService.GitFetchAsync("11.8.2");
-    var diffOutput = await diffGenerationService.GenerateRawDiffForRepositoryAsync(repoDetails, "11.8.1.0", "11.8.2");
+    await gitCommandRunnerService.GitFetchAsync("11.8.5");
+    await gitCommandRunnerService.GitFetchAsync("11.8.6");
+    var diffOutput = await diffGenerationService.GenerateRawDiffForRepositoryAsync(repoDetails, "11.8.5", "11.8.6");
     var references = diffGenerationService.ExtractCommitReferences(diffOutput);
 
     // Assert
-    Assert.That(references, Is.Not.EqualTo(null));
+    Assert.NotNull(references);
+    Assert.NotEmpty(references);
   }
 
   /// <summary>
   /// Tests the basics of the diff grouping functionality
   /// </summary>
-  [Test]
-  public void TestsCommitReferenceGroupingLogic()
+  [Fact]
+  public void GroupRawDiffs_ForHardcodedReferences_ShouldReturnExpectedOutput()
   {
     // Arrange
     var diffGenerationService = new DiffGenerationService(new GitCommandRunnerService());
@@ -89,14 +82,14 @@ public class DiffGenerationServiceTests
       { "Key3", new List<string> { "Ref5", "Ref9" } },
       { "Key4", new List<string> { "Ref8" } },
     };
-    Assert.That(groupedDiffs, Is.EquivalentTo(expected));
+    Assert.Equivalent(groupedDiffs, expected);
   }
 
   /// <summary>
   /// Tests the string conversion logic for the diffs.
   /// </summary>
-  [Test]
-  public void TestsConvertDiffsToStringLogic()
+  [Fact]
+  public void ConvertDiffsToString_ForHardcodedCommits_ShouldReturnExpectedOutput()
   {
     // Arrange
     var diffGenerationService = new DiffGenerationService(new GitCommandRunnerService());
@@ -124,6 +117,6 @@ public class DiffGenerationServiceTests
 
     // Assert
     var expected = "FEAT-1\r\nDEV-1\r\nDEV-2\r\nDEV-6\r\n\r\nFEAT-2\r\nDEV-3\r\nDEV-4\r\nDEV-7\r\n\r\nFEAT-3\r\nDEV-5\r\nDEV-9\r\nDEFECT-3\r\n\r\nFEAT-4\r\nDEV-8\r\n\r\nFEAT-5\r\nACTION-3\n\r\nCHANGES-1\r\n\r\nCHANGES-2\r\nDEV-10\n\r\nDEFECT-1\r\n\r\nDEFECT-2\r\nDEV-11\n\r\nGIP-1\r\n\r\nGIP-2\r\nDEV-12\n\r\nACTION-1\r\nDEV-13\r\n\r\nACTION-2\n\r\nCommits without references:\r\nrandom commit without reference\r\nanother random commit\r\nDEV-14";
-    Assert.That(diffString, Is.EqualTo(expected));
+    Assert.Equal(diffString, expected);
   }
 }

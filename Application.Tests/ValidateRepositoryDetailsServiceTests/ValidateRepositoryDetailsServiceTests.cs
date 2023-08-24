@@ -1,40 +1,34 @@
-﻿namespace Tests.ApplicationServiceTests;
+﻿namespace Application.Tests.ValidateRepositoryDetailsServiceTests;
 using Application.GitCommandRunnerService;
 using Application.ValidateRepositoryDetailsService;
 using Models.Models.Config;
 
-[TestFixture]
 public class ValidateRepositoryDetailsServiceTests
 {
   /// <summary>
-  /// The Test Repo to run the tests against
-  /// </summary>
-  public const string repoName = "C:\\Clients\\Singular\\Git-Diff-Generator-Tests\\inn8.web"; // TODO: have this config driven.
-
-  /// <summary>
   /// Tests the repository exists functionality
   /// </summary>
-  [Test]
-  public async Task TestsThatRepositoryExists()
+  [Fact]
+  public async Task ValidateRepoExistsAsync_ForExistingTestRepository_ShouldReturnTrue()
   {
     // Arrange
     var gitCommandRunnerService = new GitCommandRunnerService();
     var validateRepositoryDetailsService = new ValidateRepositoryDetailsService(gitCommandRunnerService);
-    var repoDetails = new RepositoryDetails { Name = "RepoTest", Path = repoName };
+    var repoDetails = new RepositoryDetails { Name = "RepoTest", Path = Constants.TestRepositoryName };
     gitCommandRunnerService.SetGitRepoDetail(repoDetails);
 
     // Act
     var repoExists = await validateRepositoryDetailsService.ValidateRepoExistsAsync(repoDetails);
 
     // Assert
-    Assert.That(repoExists, Is.True);
+    Assert.True(repoExists);
   }
 
   /// <summary>
   /// Tests the repository doesn't exist functionality
   /// </summary>
-  [Test]
-  public async Task TestsThatRepositoryDoesNotExist()
+  [Fact]
+  public async Task ValidateRepoExistsAsync_ForNonExistingTestRepository_ShouldReturnFalse()
   {
     // Arrange
     var gitCommandRunnerService = new GitCommandRunnerService();
@@ -46,58 +40,57 @@ public class ValidateRepositoryDetailsServiceTests
     var repoExists = await validateRepositoryDetailsService.ValidateRepoExistsAsync(repoDetails);
 
     // Assert
-    Assert.That(repoExists, Is.False);
+    Assert.False(repoExists);
   }
 
   /// <summary>
   /// Tests the user has repository access functionality
   /// </summary>
-  [Test]
-  public async Task TestsUserHasRepositoryAccess()
+  [Fact]
+  public async Task ValidateRepoAccessAsync_ForTestRepositoryWithValidAccess_ShouldReturnTrue()
   {
     // Arrange
     var gitCommandRunnerService = new GitCommandRunnerService();
     var validateRepositoryDetailsService = new ValidateRepositoryDetailsService(gitCommandRunnerService);
-    var repoDetails = new RepositoryDetails { Name = "RepoTest", Path = repoName };
+    var repoDetails = new RepositoryDetails { Name = "RepoTest", Path = Constants.TestRepositoryName };
     gitCommandRunnerService.SetGitRepoDetail(repoDetails);
 
     // Act
     var repoAccess = await validateRepositoryDetailsService.ValidateRepoAccessAsync(repoDetails);
 
     // Assert
-    Assert.That(repoAccess, Is.True);
+    Assert.True(repoAccess);
   }
 
   /// <summary>
   /// Tests the user doesn't have repository access functionality
   /// </summary>
-  [Test]
-  public async Task TestsUserDoesNotHaveRepositoryAccess()
+  [Fact]
+  public async Task ValidateRepoAccessAsync_ForTestRepositoryWithInvalidAccess_ShouldReturnFalse()
   {
     // Arrange
     var gitCommandRunnerService = new GitCommandRunnerService();
     var validateRepositoryDetailsService = new ValidateRepositoryDetailsService(gitCommandRunnerService);
-    var repoDetails = new RepositoryDetails { Name = "RepoTest", Path = repoName }; // TODO: currently don't have a repo to test this against
+    var repoDetails = new RepositoryDetails { Name = "RepoTest", Path = Constants.TestRepositoryName }; // TODO: test repo that people won't have access to
     gitCommandRunnerService.SetGitRepoDetail(repoDetails);
 
     // Act
     var repoAccess = await validateRepositoryDetailsService.ValidateRepoAccessAsync(repoDetails);
 
     // Assert
-    //Assert.That(repoAccess, Is.False);
-    Assert.Pass();
+    Assert.False(repoAccess);
   }
 
   /// <summary>
   /// Tests that the branch/tag exists on the repository
   /// </summary>
-  [Test]
-  public async Task TestsBranchExistsOnRepository()
+  [Fact]
+  public async Task ValidateBranchExistenceAsync_ForBranchesAndTagsThatExistOnTestRepository_ShouldReturnTrue()
   {
     // Arrange
     var gitCommandRunnerService = new GitCommandRunnerService();
     var validateRepositoryDetailsService = new ValidateRepositoryDetailsService(gitCommandRunnerService);
-    var repoDetails = new RepositoryDetails { Name = "RepoTest", Path = repoName };
+    var repoDetails = new RepositoryDetails { Name = "RepoTest", Path = Constants.TestRepositoryName };
     gitCommandRunnerService.SetGitRepoDetail(repoDetails);
 
     // Act
@@ -108,22 +101,22 @@ public class ValidateRepositoryDetailsServiceTests
     // Assert
     Assert.Multiple(() =>
     {
-      Assert.That(branchExists, Is.True);
-      Assert.That(tagExists, Is.True);
-      Assert.That(multipleExists, Is.True);
+      Assert.True(branchExists);
+      Assert.True(tagExists);
+      Assert.True(multipleExists);
     });
   }
 
   /// <summary>
   /// Tests that the branch/tag does not exist on the repository
   /// </summary>
-  [Test]
-  public async Task TestsBranchDoesNotExistOnRepository()
+  [Fact]
+  public async Task ValidateBranchExistenceAsync_ForBranchesAndTagsThatDoNotExistOnTestRepository_ShouldReturnFalse()
   {
     // Arrange
     var gitCommandRunnerService = new GitCommandRunnerService();
     var validateRepositoryDetailsService = new ValidateRepositoryDetailsService(gitCommandRunnerService);
-    var repoDetails = new RepositoryDetails { Name = "RepoTest", Path = repoName };
+    var repoDetails = new RepositoryDetails { Name = "RepoTest", Path = Constants.TestRepositoryName };
     gitCommandRunnerService.SetGitRepoDetail(repoDetails);
 
     // Act
@@ -134,9 +127,9 @@ public class ValidateRepositoryDetailsServiceTests
     // Assert
     Assert.Multiple(() =>
     {
-      Assert.That(branchExists, Is.False);
-      Assert.That(tagExists, Is.False);
-      Assert.That(multipleExists, Is.False);
+      Assert.False(branchExists);
+      Assert.False(tagExists);
+      Assert.False(multipleExists);
     });
   }
 }
