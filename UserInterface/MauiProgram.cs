@@ -13,7 +13,7 @@ public static class MauiProgram
     SynchronizationContext.SetSynchronizationContext(null);
 
     // Create DI Container
-    using var builder = MauiApp
+    var builder = MauiApp
       .CreateBuilder()
       .UseMauiApp<App>()
       .ConfigureDebugMode()
