@@ -14,20 +14,19 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7FD56623-AE87-4501-A459-1B55EBB03C27}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
-		config.json = config.json
 		publish-script.ps1 = publish-script.ps1
 		readme.md = readme.md
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csproj", "{1A68546C-12CB-48F3-B416-1E6ACBBFC8FF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserInterface", "UserInterface\UserInterface.csproj", "{9FFB2911-13F8-4EC9-9A5F-168E52D2D3D6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserApp", "UserInterface\UserApp.csproj", "{9FFB2911-13F8-4EC9-9A5F-168E52D2D3D6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{01192BA8-71B9-47AA-862E-841402CB637F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Tests", "Application.Tests\Application.Tests.csproj", "{8413927B-A761-4669-867B-5D153F40386A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application.Tests", "Application.Tests\Application.Tests.csproj", "{8413927B-A761-4669-867B-5D153F40386A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.Tests", "Domain.Tests\Domain.Tests.csproj", "{66A25BF4-4EA1-4861-853B-ED7BFA125BA8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain.Tests", "Domain.Tests\Domain.Tests.csproj", "{66A25BF4-4EA1-4861-853B-ED7BFA125BA8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

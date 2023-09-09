@@ -19,9 +19,6 @@
   </PropertyGroup>
 
   <!-- Ensures the config.json file gets redirected on build -->
-  <ItemGroup>
-    <AdditionalFiles Include="..\config.json" CopyToOutputDirectory="PreserveNewest" />
-  </ItemGroup>
 
   <!-- Project dependencies -->
   <ItemGroup>
@@ -29,6 +26,11 @@
     <ProjectReference Include="..\Dependencies\Dependencies.csproj" />
     <ProjectReference Include="..\Domain\Domain.csproj" />
     <ProjectReference Include="..\Models\Models.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="config.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
